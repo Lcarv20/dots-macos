@@ -1,0 +1,85 @@
+# Shader
+# -------------
+# custom-shader = ghostty-shaders/retro-terminal.glsl
+# custom-shader = ghostty-shaders/cubes.glsl
+# custom-shader = ghostty-shaders/underwater.glsl
+custom-shader = ghostty-shaders/cursor_smear.glsl
+# custom-shader = ghostty-shaders/cursor_frozen.glsl
+
+# Background
+# -------------
+background-opacity = 0.95
+background-blur = true
+
+# Cursor
+# -------------
+cursor-style = block
+shell-integration-features = no-cursor
+# cursor-style-blink = false
+cursor-click-to-move = true
+cursor-text = #181818
+cursor-color = #e86d6d
+# cursor-invert-fg-bg
+# cursor-color = cyan
+# cursor-opacity = 0.7
+
+# Theme
+# -------------
+# theme = light:Github,dark:GitHub Dark
+# theme = light:tokyonight-day,dark:tokyonight_night
+theme = IC Orange PPL
+# theme =  GruvboxDarkHard
+# theme = light:Night Owlish Light,dark:Gruvbox Dark Hard
+# theme = gruber-darker
+# theme = Elementary
+# theme = mellow
+#--------------
+
+# Cell
+# -------------
+adjust-cell-height = 40%
+#--------------
+
+# Font
+# -------------
+font-family = ComicShannsMono Nerd Font Propo
+# font-family = caskaydiaCove NF
+font-size = 14
+window-title-font-family = caskaydiaCove NF
+#--------------
+
+# Window size
+# -------------
+window-width = 130
+window-height = 35
+#--------------
+
+# Keybindings
+#--------------
+# cmd+arrows to navigate
+keybind = super+left=text:\x01
+keybind = super+right=text:\x05
+
+# cmd+backspace to delete the entire line
+keybind = super+backspace=text:\x15
+
+# map alt+backspace to delete the word before the cursor
+keybind = alt+backspace=text:\x17
+
+# Split navigation
+keybind = super+ctrl+h=goto_split:left
+keybind = super+ctrl+j=goto_split:bottom
+keybind = super+ctrl+k=goto_split:top
+keybind = super+ctrl+l=goto_split:right
+
+# Split zoom
+keybind = super+ctrl+enter=toggle_split_zoom
+
+# Quick terminal
+# quick-terminal-position = center
+# keybind = global:cmd+grave_accent=toggle_quick_terminal
+
+# open new tab on dotfiles
+
+# open new tab on home
+#--------------
