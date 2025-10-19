@@ -138,7 +138,7 @@ msg "Homebrew found, proceeding with installation..."
 msg "Installing Homebrew packages"
 PACKAGES=(
   lsd lazygit bob fzf mise starship stow zoxide bat bat-extras
-  git-delta ripgrep tlrc vivid gemini-cli
+  git-delta ripgrep tlrc vivid 
 )
 install_all_packages "brew install" "${PACKAGES[@]}"
 
