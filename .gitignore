@@ -1,1 +1,5 @@
 .DS_Store
+gemini/history/
+gemini/tmp/
+gemini/.gemini/installation_id
+gemini/.gemini/google_accounts.json
