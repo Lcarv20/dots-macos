@@ -1,3 +1,4 @@
 history/
 tmp/
 .gemini/installation_id
+.gemini/google_accounts.json
