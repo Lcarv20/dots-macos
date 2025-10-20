@@ -90,7 +90,7 @@ run_with_spinner() {
     local log_file
     log_file=$(mktemp) # Create a temporary file for logs
 
-    local spin='|/-\'
+    local spin=''
     local i=0
 
     # Run the command in the background, redirecting all output to the log file
