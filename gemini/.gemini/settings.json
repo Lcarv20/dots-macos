@@ -1,0 +1,59 @@
+{
+  "general": {
+    "checkpointing": {
+      "enabled": true
+    },
+    "preferredEditor": "mvim",
+    "vimMode": false
+  },
+  "ui": {
+    "showLineNumbers": true,
+    "theme": "ANSI",
+    "showCitations": true
+  },
+  "ide": {
+    "enabled": true
+  },
+  "mcpServers": {
+    "context7": {
+      "httpUrl": "https://mcp.context7.com/mcp"
+    },
+    "Astro docs": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.docs.astro.build/mcp"
+      ]
+    },
+    "github": {
+      "httpUrl": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer $GITHUB_PAT"
+      }
+    },
+    "convex": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "convex@latest",
+        "mcp",
+        "start"
+      ]
+    }
+  },
+  "tools": {
+    "sandbox": false,
+    "shell": {
+      "showColor": true
+    }
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "privacy": {
+    "usageStatisticsEnabled": true
+  }
+}

@@ -142,13 +142,13 @@ PACKAGES=(
 )
 install_all_packages "brew install" "${PACKAGES[@]}"
 
-
 # 3. Install Brew Casks
 msg "Installing Homebrew casks"
 CASKS=(
   betterdisplay font-fantasque-sans-mono-nerd-font
   font-caskaydia-cove-nerd-font font-comic-shanns-mono-nerd-font
-  ghostty helium-browser webtorrent krita iina
+  ghostty helium-browser webtorrent krita iina 
+  font-caskaydia-cove-nerd-font font-comic-shanns-mono-nerd-font
 )
 install_all_packages "brew install --cask" "${CASKS[@]}"
 
