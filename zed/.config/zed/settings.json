@@ -1,0 +1,135 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  // "icon_theme": "Min Icons",
+  "context_servers": {
+    "mcp-server-context7": {
+      "source": "extension",
+      "settings": {
+        "default_minimum_tokens": "10000"
+      }
+    }
+  },
+  "tab_bar": {
+    "show": true
+  },
+  "toolbar": {
+    "breadcrumbs": false,
+    "quick_actions": false
+  },
+  "project_panel": {
+    "dock": "left"
+  },
+  "language_models": {
+    "openai": {
+      "api_url": "https://openrouter.ai/api/v1",
+      "available_models": [
+        {
+          "name": "deepseek/deepseek-r1:free",
+          "display_name": "deepseek r1",
+          "max_tokens": 64000
+        },
+        {
+          "name": "deepseek/deepseek-chat-v3-0324:free",
+          "display_name": "deepseek v3",
+          "max_tokens": 64000
+        }
+      ]
+    }
+  },
+  // "language_models": {
+  //   "google": {
+  //     "available_models": [
+  //       {
+  //         "name": "gemini-2.0-flash-exp",
+  //         "display_name": "Gemini 2.0 Flash Experimental",
+  //         "max_tokens": 1048576
+  //       },
+  //       {
+  //         "name": "gemini-exp-1206",
+  //         "display_name": "Gemini Experimental",
+  //         "max_tokens": 1048576
+  //       }
+  //     ]
+  //   }
+  // },
+  "agent": {
+    "default_profile": "write",
+    "play_sound_when_agent_done": false,
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-5-mini"
+    }
+  },
+  // "edit_predictions": {
+  //   "mode": "subtle"
+  // },
+  "features": {
+    "edit_prediction_provider": "zed"
+    // "copilot": false,
+    // "supermaven": false
+  },
+  "telemetry": {
+    "metrics": true
+  },
+
+  // 🎨 theme settings
+  "theme": {
+    "mode": "system",
+    "light": "Lcarv Mint Light (Solid)",
+    "dark": "Lcarv Mint Dark (Blurred)"
+  },
+
+  // 🖼️ background settings
+  "terminal": {
+    "font_size": 14,
+    "font_family": "CaskaydiaCove Nerd Font",
+    "line_height": { "custom": 1.15 },
+    "font_weight": 500
+  },
+
+  // ⚙️ vim settings
+  "vim_mode": true,
+  "vim": {
+    "use_system_clipboard": "never"
+  },
+
+  // 📈 Diagnostics
+  "diagnostics": {
+    "inline": {
+      "enabled": true
+    }
+  },
+
+  // 🎨 font settings
+  // "ui_font_family": "CaskaydiaCove Nerd Font",
+  // "buffer_line_height": { "custom": 1.4 },
+  "buffer_font_family": "FantasqueSansMono Nerd Font Mono",
+  "buffer_font_size": 14.0,
+
+  // disable cursor blink
+  "cursor_blink": true,
+  "cursor_shape": "hollow",
+
+  // use relative line numbers
+  "relative_line_numbers": true,
+
+  // hide the scroll bar
+  "scrollbar": {
+    // "show": "never"
+    "git_diff": false
+  },
+  // allow cursor to reach edges of screen
+  "vertical_scroll_margin": 0,
+  "git": {
+    "inline_blame": {
+      "enabled": false
+    }
+  }
+}

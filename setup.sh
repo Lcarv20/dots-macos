@@ -138,7 +138,7 @@ msg "Homebrew found, proceeding with installation..."
 msg "Installing Homebrew packages"
 PACKAGES=(
   lsd lazygit bob fzf mise starship stow zoxide bat bat-extras
-  git-delta ripgrep tlrc vivid 
+  git-delta ripgrep tlrc vivid fastfetch fd git-filter-repo htop jq
 )
 install_all_packages "brew install" "${PACKAGES[@]}"
 
@@ -148,7 +148,7 @@ CASKS=(
   betterdisplay font-fantasque-sans-mono-nerd-font
   font-caskaydia-cove-nerd-font font-comic-shanns-mono-nerd-font
   ghostty helium-browser webtorrent krita iina 
-  font-caskaydia-cove-nerd-font font-comic-shanns-mono-nerd-font
+  font-caskaydia-cove-nerd-font font-comic-shanns-mono-nerd-font utm zed
 )
 install_all_packages "brew install --cask" "${CASKS[@]}"
 
