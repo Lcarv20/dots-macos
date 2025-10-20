@@ -3,7 +3,7 @@
 # custom-shader = ghostty-shaders/retro-terminal.glsl
 # custom-shader = ghostty-shaders/cubes.glsl
 # custom-shader = ghostty-shaders/underwater.glsl
-custom-shader = ghostty-shaders/cursor_smear.glsl
+# custom-shader = ghostty-shaders/cursor_smear.glsl
 # custom-shader = ghostty-shaders/cursor_frozen.glsl
 
 # Background

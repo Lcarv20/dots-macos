@@ -1,0 +1,287 @@
+#!/bin/zsh
+
+# Exit immediately if a command exits with a non-zero status.
+# Treat unset variables as an error and exit.
+# Exit on pipeline failures.
+set -euo pipefail
+
+# --- Configuration ---
+LOG_FILE="setup.log"  # Default log file name
+LOGGING=false
+
+# Function to show a help message
+show_help() {
+    echo "Usage: ./setup [OPTIONS]"
+    echo ""
+    echo "A script to set up the development environment by installing packages and stowing dotfiles."
+    echo ""
+    echo "Options:"
+    echo "  -l, --log    Enable logging to setup.log"
+    echo "  -h, --help   Show this help message and exit"
+    exit 0
+}
+
+# Parse command-line arguments
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -l|--log)
+            LOGGING=true
+            shift
+            ;;
+        -h|--help)
+            show_help
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            echo "Use -h or --help for usage information." >&2
+            exit 1
+            ;;
+    esac
+done
+
+# --- Logging Setup ---
+
+# Initialize the log file by clearing it if logging is enabled
+if [ "$LOGGING" = true ]; then
+    true > "$LOG_FILE"
+fi
+
+# Function to write raw command output to the log file
+log_command_output() {
+    if [ "$LOGGING" = true ]; then
+        local command_string="$1"
+        local output_file="$2"
+        echo "--- Log for: $command_string ---" >> "$LOG_FILE"
+        cat "$output_file" >> "$LOG_FILE"
+        echo "--- End Log ---" >> "$LOG_FILE"
+        echo "" >> "$LOG_FILE"
+    fi
+}
+
+# --- Helper Functions ---
+
+# Function to print messages with color (does NOT log)
+msg() {
+    echo -e "\033[35m▶ $1\033[0m"  # Purple for titles
+}
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" &> /dev/null
+}
+
+# Function to install a single package with a spinner and optional logging
+install_package() {
+    local pkg=$1
+    shift
+    local install_command=("$@")
+    local message="    Installing $pkg"
+    local temp_log_file
+    temp_log_file=$(mktemp)
+    local spin='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+    local i=0
+    local term_width
+    term_width=$(tput cols 2>/dev/null || echo 80)
+
+    # Always capture raw command output to a temporary file
+    "${install_command[@]}" "$pkg" >"$temp_log_file" 2>&1 &
+    local pid=$!
+
+    # Simple spinner
+    printf "%s %s" "${spin:0:1}" "$message"
+    while kill -0 "$pid" 2>/dev/null; do
+        i=$(( (i+1) % ${#spin} ))
+        printf "\r%s %s" "${spin:$i:1}" "$message"
+        sleep 0.1
+    done
+
+    wait "$pid" || true
+    local exit_code=$?
+
+    printf "\r%*s\r" "$term_width" ""
+
+    # Write the raw output to the main log file if logging is enabled
+    log_command_output "${install_command[*]} $pkg" "$temp_log_file"
+
+    if [ $exit_code -eq 0 ]; then
+        if grep -qi "already installed\|already satisfied" "$temp_log_file"; then
+            printf "\033[32m    ✔ %s (already installed)\033[0m\n" "$pkg"
+        else
+            printf "\033[32m    ✔ %s installed\033[0m\n" "$pkg"
+        fi
+    else
+        printf "\033[31m    ✖ Failed to install %s\033[0m\n" "$pkg"
+        echo "        └─ An error occurred. Full log from the command:" >&2
+        sed 's/^/           /' "$temp_log_file" >&2
+        rm -f "$temp_log_file"
+        exit 1
+    fi
+
+    rm -f "$temp_log_file"
+}
+
+# Function to install multiple packages
+install_all_packages() {
+    local install_cmd_str=$1
+    shift
+    local packages=("$@")
+    local install_cmd
+    read -rA install_cmd <<< "$install_cmd_str"
+
+    for pkg in "${packages[@]}"; do
+        install_package "$pkg" "${install_cmd[@]}"
+    done
+}
+
+# Function to run a command with a spinner and optional logging
+run_with_spinner() {
+    local message="$1"
+    shift
+    local command_to_run=("$@")
+    local temp_log_file
+    temp_log_file=$(mktemp)
+    local spin='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+    local i=0
+    local term_width
+    term_width=$(tput cols 2>/dev/null || echo 80)
+
+    # Always capture raw command output to a temporary file
+    "${command_to_run[@]}" >"$temp_log_file" 2>&1 &
+    local pid=$!
+
+    # Simple spinner
+    printf "%s %s" "${spin:0:1}" "    $message"
+    while kill -0 "$pid" 2>/dev/null; do
+        i=$(( (i+1) % ${#spin} ))
+        printf "\r%s %s" "${spin:$i:1}" "    $message"
+        sleep 0.1
+    done
+
+    wait "$pid" || true
+    local exit_code=$?
+
+    printf "\r%*s\r" "$term_width" ""
+
+    # Write the raw output to the main log file if logging is enabled
+    log_command_output "${command_to_run[*]}" "$temp_log_file"
+
+    if [ $exit_code -eq 0 ]; then
+        printf "\033[32m    ✔ %s\033[0m\n" "$message"
+    else
+        printf "\033[31m    ✖ %s\033[0m\n" "$message"
+        echo "        └─ An error occurred. Full log from the command:" >&2
+        sed 's/^/           /' "$temp_log_file" >&2
+        rm -f "$temp_log_file"
+        exit "$exit_code"
+    fi
+
+    rm -f "$temp_log_file"
+}
+
+# --- Main Script ---
+msg "Starting setup..."
+
+# 1. Check for Homebrew
+if ! command_exists brew; then
+    echo "Error: Homebrew is not installed. Please install it from https://brew.sh/" >&2
+    exit 1
+fi
+msg "Homebrew found, proceeding with installation..."
+
+# 2. Prompt for package installation
+msg "Preparing to install packages and casks"
+PACKAGES=(
+    lsd lazygit bob fzf mise starship stow zoxide bat bat-extras
+    git-delta ripgrep tlrc vivid fastfetch fd git-filter-repo htop jq
+)
+CASKS=(
+    betterdisplay font-fantasque-sans-mono-nerd-font
+    font-caskaydia-cove-nerd-font font-comic-shanns-mono-nerd-font
+    ghostty helium-browser webtorrent krita iina utm zed
+)
+
+echo "The following will be installed:"
+echo ""
+
+# Determine the number of rows for our two-column layout
+if [ ${#PACKAGES[@]} -gt ${#CASKS[@]} ]; then
+    max_rows=${#PACKAGES[@]}
+else
+    max_rows=${#CASKS[@]}
+fi
+
+# Print packages and casks in two columns
+printf "\033[36m%-40s %s\033[0m\n" "PACKAGES" "CASKS"
+printf "%-40s %s\n" "------------------------------" "------------------------------"
+for ((i=0; i<max_rows; i++)); do
+    package_item="${PACKAGES[i]:-}"
+    cask_item="${CASKS[i]:-}"
+    [ -n "$package_item" ] && package_item="     - $package_item"
+    [ -n "$cask_item" ] && cask_item="     - $cask_item"
+    printf "%-40s %s\n" "$package_item" "$cask_item"
+done
+
+echo ""
+echo -n "Do you want to install these? (y/n): "
+read -r response
+echo ""
+
+if [[ ! "$response" =~ ^[Yy]$ ]]; then
+    echo "Installation cancelled."
+    exit 0
+fi
+
+# 3. Install Brew Packages
+msg "Installing Homebrew packages"
+install_all_packages "brew install" "${PACKAGES[@]}"
+echo ""
+
+# 4. Install Brew Casks
+msg "Installing Homebrew casks"
+install_all_packages "brew install --cask" "${CASKS[@]}"
+echo ""
+
+# 5. Stow Dotfiles
+msg "Stowing dotfiles"
+run_with_spinner "Stowing dotfiles" \
+    stow ghostty git lazygit lsd mvim starship zsh
+
+echo ""
+
+# 6. Install Runtimes with mise
+msg "Preparing to install runtimes with mise"
+RUNTIMES=(
+    bun
+    deno
+    node
+    go
+    rust
+    pnpm
+)
+
+echo "The following runtimes will be installed globally:"
+echo ""
+for runtime in "${RUNTIMES[@]}"; do
+    echo "     - $runtime"
+done
+echo ""
+echo -n "Do you want to install these? (y/n): "
+read -r response
+echo ""
+
+if [[ "$response" =~ ^[Yy]$ ]]; then
+    if ! command_exists mise; then
+        echo "Error: mise is not installed but is required to install runtimes." >&2
+        echo "It should have been installed as part of the Homebrew packages." >&2
+        exit 1
+    fi
+
+    msg "Installing runtimes"
+    for runtime in "${RUNTIMES[@]}"; do
+        run_with_spinner "Installing $runtime" \
+            mise use -g "${runtime}@latest"
+    done
+fi
+
+echo ""
+msg "Setup complete! ✨"
