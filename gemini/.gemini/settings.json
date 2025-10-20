@@ -1,19 +1,4 @@
 {
-  "general": {
-    "checkpointing": {
-      "enabled": true
-    },
-    "preferredEditor": "mvim",
-    "vimMode": false
-  },
-  "ui": {
-    "showLineNumbers": true,
-    "theme": "ANSI",
-    "showCitations": true
-  },
-  "ide": {
-    "enabled": true
-  },
   "mcpServers": {
     "context7": {
       "httpUrl": "https://mcp.context7.com/mcp"
@@ -41,6 +26,41 @@
         "start"
       ]
     }
+  },
+  "ui": {
+    "showLineNumbers": true,
+    "showCitations": true,
+    "customThemes": {
+      "lcarv": {
+        "name": "lcarv",
+        "type": "custom",
+        "Background": "#262626",
+        "Foreground": "#ffecb1",
+        "LightBlue": "#ffd489",
+        "AccentBlue": "#ff8c69",
+        "AccentPurple": "#ff7044",
+        "AccentCyan": "#fec28d",
+        "AccentGreen": "#ffe79f",
+        "AccentYellow": "#ffce86",
+        "AccentRed": "#ff662e",
+        "Gray": "#d0a46a",
+        "Comment": "#bdb54d",
+        "DiffAdded": "#12331b",
+        "DiffRemoved": "#422219",
+        "DiffModified": "#caaf00"
+      }
+    },
+    "theme": "lcarv"
+  },
+  "general": {
+    "checkpointing": {
+      "enabled": true
+    },
+    "preferredEditor": "mvim",
+    "vimMode": false
+  },
+  "ide": {
+    "enabled": true
   },
   "tools": {
     "sandbox": false,
