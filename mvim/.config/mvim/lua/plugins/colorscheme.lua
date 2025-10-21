@@ -5,7 +5,7 @@ return {
 		config = function()
 			require("gruber-darker").setup({
 				-- OPTIONAL
-				-- transparent = true, -- removes the background
+				transparent = true, -- removes the background
 				underline = true, -- disables underline fonts
 				bold = true, -- disables bold fonts
 			})
@@ -18,16 +18,31 @@ return {
 		lazy = false,
 		priority = 1000,
 		opts = {
-      transparent = true,
-      styles = {
-        sidebars = "transparent",
-        floats = "transparent",
-      },
-    },
-    config = function(_, opts)
-      require("tokyonight").setup(opts)
-      -- vim.cmd.colorscheme("tokyonight-night")
-    end,
+			transparent = true,
+			styles = {
+				sidebars = "transparent",
+				floats = "transparent",
+			},
+		},
+		config = function(_, opts)
+			require("tokyonight").setup(opts)
+			-- vim.cmd.colorscheme("tokyonight-night")
+		end,
+	},
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
+		config = function()
+			require("catppuccin").setup({
+				transparent_background = true, -- disables setting the background color.
+				float = {
+					transparent = true, -- enable transparent floating windows
+					solid = true, -- use solid styling for floating windows, see |winborder|
+				},
+			})
+			-- vim.cmd.colorscheme("catppuccin")
+		end,
 	},
 	{
 		"topazape/oldtale.nvim",

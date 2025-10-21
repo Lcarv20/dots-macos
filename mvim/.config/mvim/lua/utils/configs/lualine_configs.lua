@@ -286,7 +286,7 @@ M.cosmicink = function()
 	-- Config
 	local config = {
 		options = {
-      globalstatus = true,
+			globalstatus = true,
 			component_separators = "",
 			section_separators = "",
 			theme = {
@@ -648,245 +648,6 @@ M.recorded = function(colors, separator)
 end
 
 M.lcarv_evil = function()
-	local normal_bg = string.format("#%06x", vim.api.nvim_get_hl(0, { name = "Normal" }).bg)
-	local normal_fg = string.format("#%06x", vim.api.nvim_get_hl(0, { name = "Normal" }).fg)
-
-  -- stylua: ignore
-  local colors = {
-    bg       = normal_bg,
-    fg       = normal_fg,
-    yellow   = '#ECBE7B',
-    cyan     = '#008080',
-    darkblue = '#081633',
-    green    = '#98be65',
-    orange   = '#FF8800',
-    violet   = '#a9a1e1',
-    magenta  = '#c678dd',
-    blue     = '#51afef',
-    red      = '#ec5f67',
-  }
-
-	local conditions = {
-		buffer_not_empty = function()
-			return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-		end,
-		hide_in_width = function()
-			return vim.fn.winwidth(0) > 80
-		end,
-		check_git_workspace = function()
-			local filepath = vim.fn.expand("%:p:h")
-			local gitdir = vim.fn.finddir(".git", filepath .. ";")
-			return gitdir and #gitdir > 0 and #gitdir < #filepath
-		end,
-	}
-
-	-- Config
-	local config = {
-		options = {
-      globalstatus = true,
-			-- Disable sections and component separators
-			component_separators = "",
-			section_separators = "",
-			theme = {
-				-- We are going to use lualine_c an lualine_x as left and
-				-- right section. Both are highlighted by c theme .  So we
-				-- are just setting default looks o statusline
-				normal = { c = { fg = colors.fg, bg = colors.bg } },
-				inactive = { c = { fg = colors.fg, bg = colors.bg } },
-			},
-		},
-		sections = {
-			-- these are to remove the defaults
-			lualine_a = {},
-			lualine_b = {},
-			lualine_y = {},
-			lualine_z = {},
-			-- These will be filled later
-			lualine_c = {},
-			lualine_x = {},
-		},
-		inactive_sections = {
-			-- these are to remove the defaults
-			lualine_a = {},
-			lualine_b = {},
-			lualine_y = {},
-			lualine_z = {},
-			lualine_c = {},
-			lualine_x = {},
-		},
-	}
-
-	-- Inserts a component in lualine_c at left section
-	local function ins_left(component)
-		table.insert(config.sections.lualine_c, component)
-	end
-
-	-- Inserts a component in lualine_x at right section
-	local function ins_right(component)
-		table.insert(config.sections.lualine_x, component)
-	end
-
-	ins_left({
-		function()
-			return "🭪"
-		end,
-		color = { fg = colors.blue }, -- Sets highlighting of component
-		padding = { left = 0, right = 1 }, -- We don't need space before this
-	})
-
-	ins_left({
-		-- mode component
-		function()
-			return ""
-		end,
-		color = function()
-			-- auto change color according to neovims mode
-			local mode_color = {
-				n = colors.red,
-				i = colors.green,
-				v = colors.blue,
-				[""] = colors.blue,
-				V = colors.blue,
-				c = colors.magenta,
-				no = colors.red,
-				s = colors.orange,
-				S = colors.orange,
-				[""] = colors.orange,
-				ic = colors.yellow,
-				R = colors.violet,
-				Rv = colors.violet,
-				cv = colors.red,
-				ce = colors.red,
-				r = colors.cyan,
-				rm = colors.cyan,
-				["r?"] = colors.cyan,
-				["!"] = colors.red,
-				t = colors.red,
-			}
-			return { fg = mode_color[vim.fn.mode()] }
-		end,
-		padding = { right = 1 },
-	})
-
-	ins_left({
-		-- filesize component
-		"filesize",
-		cond = conditions.buffer_not_empty,
-	})
-
-	-- ins_left({
-	-- 	"filename",
-	-- 	cond = conditions.buffer_not_empty,
-	-- 	color = { fg = colors.magenta, gui = "bold" },
-	-- })
-
-	ins_left({ "location" })
-
-	ins_left({ "progress", color = { fg = colors.fg, gui = "bold" } })
-
-	ins_left({
-		"diagnostics",
-		sources = { "nvim_diagnostic" },
-		symbols = { error = " ", warn = " ", info = " " },
-		diagnostics_color = {
-			error = { fg = colors.red },
-			warn = { fg = colors.yellow },
-			info = { fg = colors.cyan },
-		},
-	})
-
-	ins_left(M.recorded({ fg = colors.green, bg = colors.bg }, { right = "/", left = "" }))
-	ins_left(M.recording({ fg = colors.red, bg = colors.bg }, { right = "", left = "" }))
-
-	-- Insert mid section. You can make any number of sections in neovim :)
-	-- for lualine it's any number greater then 2
-	ins_left({
-		function()
-			return "%="
-		end,
-	})
-
-	-- ins_left({
-	-- 	-- Lsp server name .
-	-- 	function()
-	-- 		local msg = "No Active Lsp"
-	-- 		local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
-	-- 		local clients = vim.lsp.get_clients()
-	-- 		if next(clients) == nil then
-	-- 			return msg
-	-- 		end
-	-- 		for _, client in ipairs(clients) do
-	-- 			-- @luacheck: ignore
-	-- 			local filetypes = client.config.filetypes
-	-- 			if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-	-- 				return client.name
-	-- 			end
-	-- 		end
-	-- 		return msg
-	-- 	end,
-	-- 	icon = "  LSP:",
-	-- 	color = { fg = "#ffffff", gui = "bold" },
-	-- })
-
-	-- Add components to right sections
-	-- ins_right({
-	-- 	"o:encoding", -- option component same as &encoding in viml
-	-- 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
-	-- 	cond = conditions.hide_in_width,
-	-- 	color = { fg = colors.green, gui = "bold" },
-	-- })
-
-	ins_right({
-		"filetype",
-		icon_only = true,
-		cond = conditions.buffer_not_empty,
-		-- color = { fg = colors.magenta, gui = "bold" },
-	})
-
-	ins_right({
-		"filename",
-		cond = conditions.buffer_not_empty,
-		color = { fg = colors.magenta, gui = "bold" },
-	})
-
-	-- ins_right({
-	-- 	"fileformat",
-	-- 	fmt = string.upper,
-	-- 	icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
-	-- 	color = { fg = colors.green, gui = "bold" },
-	-- })
-
-	ins_right({
-		"branch",
-		icon = "",
-		color = { fg = colors.violet, gui = "bold" },
-	})
-
-	ins_right({
-		"diff",
-		-- Is it me or the symbol for modified us really weird
-		symbols = { added = " ", modified = "󰝤 ", removed = " " },
-		diff_color = {
-			added = { fg = colors.green },
-			modified = { fg = colors.orange },
-			removed = { fg = colors.red },
-		},
-		cond = conditions.hide_in_width,
-	})
-
-	ins_right({
-		function()
-			return "🭨"
-		end,
-		color = { fg = colors.blue },
-		padding = { left = 1 },
-	})
-
-	-- Now don't forget to initialize lualine
-	return config
-end
-
-M.lcarv_shrugged = function()
 	local colors = require("utils.colors").colors()
 
 	local conditions = {
@@ -905,7 +666,7 @@ M.lcarv_shrugged = function()
 
 	local config = {
 		options = {
-      globalstatus = true,
+			globalstatus = true,
 			component_separators = "",
 			section_separators = "",
 			theme = {
@@ -951,9 +712,9 @@ M.lcarv_shrugged = function()
 
 	ins_left({
 		function()
-			return "¯\\_(ツ)_/¯"
-			-- return " "
-      -- return "󰾡 󱣻 "
+			-- return "¯\_(ツ)_/¯"
+			return " "
+			-- return "󰾡 󱣻 "
 		end,
 		color = function()
 			local mode_color = {
@@ -1046,6 +807,434 @@ M.lcarv_shrugged = function()
 		color = { fg = colors.mauve },
 		padding = { left = 1 },
 	})
+
+	return config
+end
+
+M.lcarv_pill = function()
+	local colors = require("utils.colors").colors()
+
+	local conditions = {
+		buffer_not_empty = function()
+			return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
+		end,
+		hide_in_width = function()
+			return vim.fn.winwidth(0) > 80
+		end,
+		check_git_workspace = function()
+			local filepath = vim.fn.expand("%:p:h")
+			local gitdir = vim.fn.finddir(".git", filepath .. ";")
+			return gitdir and #gitdir > 0 and #gitdir < #filepath
+		end,
+	}
+
+	local pill_bg = "#2d2d2d"
+
+	local config = {
+		options = {
+			globalstatus = true,
+			component_separators = " ",
+			section_separators = "",
+			theme = {
+				normal = {
+					a = { fg = colors.fg, bg = "NONE" },
+					b = { fg = colors.fg, bg = "NONE" },
+					c = { fg = colors.fg, bg = "NONE" },
+					x = { fg = colors.fg, bg = "NONE" },
+					y = { fg = colors.fg, bg = "NONE" },
+					z = { fg = colors.fg, bg = "NONE" },
+				},
+				inactive = {
+					a = { fg = colors.fg, bg = "NONE" },
+					b = { fg = colors.fg, bg = "NONE" },
+					c = { fg = colors.fg, bg = "NONE" },
+					x = { fg = colors.fg, bg = "NONE" },
+					y = { fg = colors.fg, bg = "NONE" },
+					z = { fg = colors.fg, bg = "NONE" },
+				},
+			},
+		},
+		sections = {
+			lualine_a = {},
+			lualine_b = {},
+			lualine_y = {},
+			lualine_z = {},
+			lualine_c = {},
+			lualine_x = {},
+		},
+		inactive_sections = {
+			lualine_a = {},
+			lualine_b = {},
+			lualine_y = {},
+			lualine_z = {},
+			lualine_c = {},
+			lualine_x = {},
+		},
+	}
+
+	-- Inserts a component in lualine_c at left section
+	local function ins_left(component)
+		table.insert(config.sections.lualine_c, component)
+	end
+
+	-- Inserts a component in lualine_x at right section
+	local function ins_right(component)
+		table.insert(config.sections.lualine_x, component)
+	end
+
+	-- Pill 1: mode
+	ins_left({
+		function()
+			return ""
+		end,
+		color = function()
+			local mode_color = {
+				n = colors.red,
+				i = colors.green,
+				v = colors.blue,
+				V = colors.blue,
+				c = colors.magenta,
+				no = colors.red,
+				s = colors.orange,
+				S = colors.orange,
+				[" "] = colors.orange,
+				ic = colors.yellow,
+				R = colors.violet,
+				Rv = colors.violet,
+				cv = colors.red,
+				ce = colors.red,
+				r = colors.cyan,
+				rm = colors.cyan,
+				["r?"] = colors.cyan,
+				["!"] = colors.red,
+				t = colors.red,
+			}
+			return { fg = mode_color[vim.fn.mode()], bg = pill_bg }
+		end,
+		padding = { left = 1, right = 1 },
+	})
+
+	-- Pill 2: file size, file length and location
+	ins_left({
+		{
+			"filesize",
+			cond = conditions.buffer_not_empty,
+			color = { bg = pill_bg, fg = colors.fg },
+			padding = { left = 1, right = 0 },
+		},
+		{
+			"location",
+			color = { bg = pill_bg, fg = colors.fg },
+			padding = { left = 1, right = 0 },
+		},
+		{
+			"progress",
+			color = { bg = pill_bg, fg = colors.fg, gui = "bold" },
+			padding = { left = 1, right = 1 },
+		},
+	})
+
+	-- Pill 3: diagnostics
+	ins_left({
+		"diagnostics",
+		sources = { "nvim_diagnostic" },
+		symbols = { error = " ", warn = " ", info = " " },
+		diagnostics_color = {
+			error = { fg = colors.red, bg = pill_bg },
+			warn = { fg = colors.yellow, bg = pill_bg },
+			info = { fg = colors.cyan, bg = pill_bg },
+		},
+		color = { bg = pill_bg },
+		padding = { left = 1, right = 1 },
+	})
+
+	ins_left({
+		function()
+			return "%="
+		end,
+	})
+
+	-- Right side
+	-- Pill 4: file icon and file name
+	ins_right({
+		{
+			"filetype",
+			icon_only = true,
+			cond = conditions.buffer_not_empty,
+			color = { bg = pill_bg, fg = colors.fg },
+			padding = { left = 1, right = 0 },
+		},
+		{
+			"filename",
+			cond = conditions.buffer_not_empty,
+			color = { fg = colors.magenta, gui = "bold", bg = pill_bg },
+			padding = { left = 1, right = 1 },
+		},
+	})
+
+	-- Pill 5: branch
+	ins_right({
+		"branch",
+		icon = "",
+		color = { fg = colors.violet, gui = "bold", bg = pill_bg },
+		padding = { left = 1, right = 1 },
+	})
+
+	-- Pill 6: diff
+	ins_right({
+		"diff",
+		symbols = { added = " ", modified = "󱨇 ", removed = " " },
+		diff_color = {
+			added = { fg = colors.green, bg = pill_bg },
+			modified = { fg = colors.orange, bg = pill_bg },
+			removed = { fg = colors.red, bg = pill_bg },
+		},
+		cond = conditions.hide_in_width,
+		color = { bg = pill_bg },
+		padding = { left = 1, right = 1 },
+	})
+
+	return config
+end
+
+M.gemini = function()
+	local colors = require("utils.colors").colors()
+	local pill_bg = "#212121"
+
+	local conditions = {
+		buffer_not_empty = function()
+			return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
+		end,
+		hide_in_width = function()
+			return vim.fn.winwidth(0) > 80
+		end,
+		check_git_workspace = function()
+			local filepath = vim.fn.expand("%:p:h")
+			local gitdir = vim.fn.finddir(".git", filepath .. ";")
+			return gitdir and #gitdir > 0 and #gitdir < #filepath
+		end,
+	}
+
+	local config = {
+		options = {
+			globalstatus = true,
+			component_separators = "",
+			section_separators = "",
+			theme = {
+				normal = { c = { fg = colors.fg, bg = "none" } },
+				inactive = { c = { fg = colors.fg, bg = "none" } },
+			},
+		},
+		sections = {
+			lualine_a = {}, lualine_b = {}, lualine_y = {},
+			lualine_z = {}, lualine_c = {}, lualine_x = {},
+		},
+		inactive_sections = {
+			lualine_a = {}, lualine_b = {}, lualine_y = {},
+			lualine_z = {}, lualine_c = {}, lualine_x = {},
+		},
+	}
+
+	local function insert_component(tbl, comp)
+		if type(comp) == "table" and comp[1] ~= nil then
+			for _, c in ipairs(comp) do table.insert(tbl, c) end
+		else
+			table.insert(tbl, comp)
+		end
+	end
+
+	local function ins_left(component) insert_component(config.sections.lualine_c, component) end
+	local function ins_right(component) insert_component(config.sections.lualine_x, component) end
+
+	local function normalize_component(c)
+		if type(c) == "table" then return c end
+		return { c }
+	end
+
+	local function is_component_empty(comp)
+		if type(comp[1]) == "string" then
+			return comp[1] == "" or comp[1] == nil
+		elseif type(comp[1]) == "function" then
+			local ok, val = pcall(comp[1])
+			if not ok then return true end
+			return val == nil or val == ""
+		end
+		return false
+	end
+
+	-- Wrapper for ALWAYS-VISIBLE components like the mode indicator.
+	-- It simply adds a background and separators without any complex conditions.
+	local function simple_pill(component, opts)
+		opts = opts or {}
+		local left_sep_char = opts.left_sep or " "
+		local right_sep_char = opts.right_sep or " "
+
+		-- This is the crucial part: we modify the original component's color function.
+		-- This preserves its dynamic behavior.
+		local orig_color = component.color
+		if type(orig_color) == "function" then
+			component.color = function()
+				local c = orig_color() or {}
+				c.bg = pill_bg
+				return c
+			end
+		else
+			if type(component.color) == "table" then
+				component.color.bg = pill_bg
+			else
+				component.color = { fg = component.color or colors.fg, bg = pill_bg }
+			end
+		end
+
+		if not component.padding then component.padding = { left = 1, right = 1 } end
+
+		local left_sep = {
+			function() return left_sep_char end,
+			color = { fg = pill_bg },
+			padding = 0,
+		}
+		local right_sep = {
+			function() return right_sep_char end,
+			color = { fg = pill_bg },
+			padding = 0,
+		}
+
+		return { left_sep, component, right_sep }
+	end
+
+	-- Wrapper for CONDITIONALLY-VISIBLE components that should hide completely.
+	local function conditional_pill(components, opts)
+		opts = opts or {}
+		local left_sep_char = opts.left_sep or " "
+		local right_sep_char = opts.right_sep or " "
+
+		local inner_components = {}
+		if type(components) == "table" and components[1] ~= nil then
+			for _, e in ipairs(components) do table.insert(inner_components, normalize_component(e)) end
+		else
+			table.insert(inner_components, normalize_component(components))
+		end
+
+		local function should_render_pill()
+			for _, comp in ipairs(inner_components) do
+				local is_cond_ok = true
+				if comp.cond and type(comp.cond) == "function" then
+					local ok, result = pcall(comp.cond)
+					is_cond_ok = ok and result
+				end
+				if is_cond_ok and not is_component_empty(comp) then return true end
+			end
+			return false
+		end
+
+		for _, comp in ipairs(inner_components) do
+			local orig_color = comp.color
+			if type(orig_color) == "function" then
+				comp.color = function()
+					local c = orig_color() or {}
+					c.bg = pill_bg
+					return c
+				end
+			else
+				if type(comp.color) == "table" then
+					comp.color.bg = pill_bg
+				else
+					comp.color = { fg = comp.color or colors.fg, bg = pill_bg }
+				end
+			end
+			if not comp.padding then comp.padding = { left = 1, right = 1 } end
+		end
+
+		local left_sep = {
+			function() return left_sep_char end,
+			color = { fg = pill_bg },
+			padding = 0,
+			cond = should_render_pill,
+		}
+		local right_sep = {
+			function() return right_sep_char end,
+			color = { fg = pill_bg },
+			padding = 0,
+			cond = should_render_pill,
+		}
+
+		local result = { left_sep }
+		vim.list_extend(result, inner_components)
+		table.insert(result, right_sep)
+		return result
+	end
+
+	---------------------------------
+	--        Component Setup        --
+	---------------------------------
+
+	-- mode indicator (uses the simple, always-on pill)
+	local mode_comp = {
+		function() return "" end,
+		color = function()
+			local mode_color = {
+				n = colors.red, i = colors.green, v = colors.blue, V = colors.blue,
+				c = colors.magenta, no = colors.red, s = colors.orange, S = colors.orange,
+				ic = colors.yellow, R = colors.violet, Rv = colors.violet, cv = colors.red,
+				ce = colors.red, r = colors.cyan, rm = colors.cyan, ["r?"] = colors.cyan,
+				["!"] = colors.red, t = colors.red,
+			}
+			return { fg = mode_color[vim.fn.mode()] }
+		end,
+		padding = { right = 2, left = 1 },
+	}
+	ins_left(simple_pill(mode_comp))
+
+	-- The rest use the conditional pill that can hide itself
+	ins_left(conditional_pill({
+		{ "location" },
+		{ "progress", color = { fg = colors.fg, gui = "bold" } },
+	}))
+
+	ins_left(conditional_pill({
+		{
+			"diagnostics",
+			cond = function() return #vim.diagnostic.get(0) > 0 end,
+			sources = { "nvim_diagnostic" },
+			symbols = { error = " ", warn = " ", info = " " },
+			diagnostics_color = {
+				error = { fg = colors.red },
+				warn = { fg = colors.yellow },
+				info = { fg = colors.cyan },
+			},
+		},
+	}))
+
+	ins_left({ function() return "%=" end })
+
+	if M.recorded then ins_left(M.recorded({ fg = colors.green }, { right = "/", left = "" })) end
+	if M.recording then ins_left(M.recording({ fg = colors.red }, { right = "", left = "" })) end
+
+	ins_right(conditional_pill({
+		{ "filetype", icon_only = true, cond = conditions.buffer_not_empty },
+		{ "filename", cond = conditions.buffer_not_empty, color = { fg = colors.magenta, gui = "bold" } },
+	}))
+
+	ins_right(conditional_pill({
+		{
+			"branch",
+			icon = "",
+			color = { fg = colors.violet, gui = "bold" },
+			cond = conditions.check_git_workspace,
+		},
+		{
+			"diff",
+			symbols = { added = " ", modified = "󱨇 ", removed = " " },
+			diff_color = {
+				added = { fg = colors.green },
+				modified = { fg = colors.orange },
+				removed = { fg = colors.red },
+			},
+			cond = function()
+				return conditions.hide_in_width() and conditions.check_git_workspace()
+			end,
+		},
+	}))
 
 	return config
 end

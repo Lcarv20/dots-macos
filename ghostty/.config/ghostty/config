@@ -8,7 +8,7 @@
 
 # Background
 # -------------
-background-opacity = 0.95
+background-opacity = 0.90
 background-blur = true
 
 # Cursor
