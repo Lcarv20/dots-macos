@@ -38,20 +38,22 @@ return {
 				return {
 					{
 						line.sep("🭪", { bg = colors.green }, { fg = colors.fg, bg = colors.bg }),
-						{ "   ", hl = { fg = colors.green, bg = colors.bg, style = "bold" } },
+						{ "  ", hl = { fg = colors.green, bg = colors.bg, style = "bold" } },
+						line.sep(" ", { bg = colors.bg }, { fg = colors.bg, bg = "NONE" }),
 					},
 					line.tabs().foreach(function(tab)
 						local hl = tab.is_current() and { fg = colors.orange, bg = colors.bg, style = "bold" }
 							or { fg = colors.subtle_gray, bg = colors.bg }
 						return {
-							line.sep(" ", hl, { fg = colors.fg, bg = colors.bg, style = "bold" }),
+							line.sep(" ", hl, { fg = colors.bg, bg = "NONE", style = "bold" }),
 							tab.is_current() and " " or "",
 							tab.number(),
 							tab.name(),
 							-- tab.close_btn(""),
 							line.sep(" ", hl, { fg = colors.fg, bg = colors.bg, style = "bold" }),
 							hl = hl,
-							margin = " ",
+              margin = " ",
+							line.sep("", hl, { fg = colors.bg, bg = "NONE", style = "bold" }),
 						}
 					end),
 					line.spacer(),

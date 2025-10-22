@@ -89,6 +89,7 @@ return {
 	},
 	{
 		"Lcarv20/sugoi.nvim",
+    dir = "~/Developer/nvim-plugins/sugoi.nvim",
 		dependencies = { "tjdevries/colorbuddy.nvim" },
 		lazy = false,
 		priority = 1000,
