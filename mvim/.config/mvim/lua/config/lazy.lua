@@ -20,14 +20,16 @@ require("lazy").setup({
 		{ import = "plugins" },
 	},
 	change_detection = {
-		notify = false,
+		-- automatically check for config fil<D-c>e changes and reload the ui
+		enabled = true, -- default: true
+		notify = true, -- get a notification when changes are found
 	},
 	checker = {
 		enabled = true, -- check for plugin updates periodically
-		notify = false, -- notify on update
+		notify = true, -- notify on update
 	}, -- automatically check for plugin updates
 	ui = {
 		border = "double",
 	},
-	install = { colorscheme = {"sugoi", "default" } },
+	install = { colorscheme = { "sugoi", "default" } },
 })

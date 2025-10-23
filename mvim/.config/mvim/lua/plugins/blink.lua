@@ -27,7 +27,8 @@ return {
 					if cmp.snippet_active() then
 						return cmp.accept()
 					else
-						return cmp.select_and_accept()
+						-- return cmp.select_and_accept()
+						return nil
 					end
 				end,
 				"snippet_forward",
@@ -38,13 +39,13 @@ return {
 		cmdline = {
 			keymap = {
 				preset = "inherit",
-				["<Tab>"] = { "show_and_insert", "select_next" },
-				["<S-Tab>"] = { "show_and_insert", "select_prev" },
+				-- ["<Tab>"] = { "show_and_insert", "select_next" },
+				-- ["<S-Tab>"] = { "show_and_insert", "select_prev" },
 
 				["<C-space>"] = { "show", "fallback" },
 
-				["<C-n>"] = { "select_next", "fallback" },
-				["<C-p>"] = { "select_prev", "fallback" },
+				["<C-n>"] = { "show_and_insert", "select_next", "fallback" },
+				["<C-p>"] = { "show_and_insert", "select_prev", "fallback" },
 				["<Right>"] = { "select_next", "fallback" },
 				["<Left>"] = { "select_prev", "fallback" },
 
