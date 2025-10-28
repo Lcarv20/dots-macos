@@ -89,12 +89,12 @@ return {
 	},
 	{
 		"Lcarv20/sugoi.nvim",
-    dir = "~/Developer/nvim-plugins/sugoi.nvim",
+    -- dir = "~/Developer/nvim-plugins/sugoi.nvim",
 		dependencies = { "tjdevries/colorbuddy.nvim" },
 		lazy = false,
 		priority = 1000,
 		opts = {
-			-- transparent = true,
+			transparent = true,
 		},
 		config = function(_, opts)
 			require("sugoi").setup(opts)
