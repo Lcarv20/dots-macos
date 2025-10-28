@@ -1,3 +1,15 @@
+local logo = [[
+ ✦   ████ ✧     ✦           ☆        ✦     ☆        
+  ☆ ░░███     ✧   ☆  ✧    ✦  ✧            ✧     ✧ ☆ 
+     ░███  ☆██████  ██████  ████████☆ █████ █████  ✧
+✦  ☆ ░███  ███░░███░░░░░███░░███░░███░░███ ░░███ ✧  
+     ░███ ░███ ░░░  ███████ ░███ ░░░  ░███  ░███    
+   ✧ ░███ ░███  ███░██░░███ ░███  ✦   ░░███ ███  ✦  
+     █████░░██████░░█████████████   ✧  ░░█████  ☆   
+☆   ░░░░░✦ ░░░░░░☆ ░░░░░░░░░░░░░ ✧     ✦░░░░░     ✦ 
+   ✧    ✧    ☆      ✧  ✦       ☆       ☆  ✧   ✦     
+]]
+
 local global_border = require("utils.fns").get_border()
 return {
 	"folke/snacks.nvim",
@@ -8,7 +20,13 @@ return {
 	opts = {
 		bigfile = { enabled = true },
 		image = { enabled = true },
-		dashboard = { enabled = true },
+		dashboard = {
+			enabled = true,
+			preset = {
+				header = logo,
+				-- keys = default_keys,
+			},
+		},
 		explorer = {
 			enabled = true,
 		},
