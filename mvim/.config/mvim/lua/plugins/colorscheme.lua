@@ -94,7 +94,7 @@ return {
 		lazy = false,
 		priority = 1000,
 		opts = {
-			transparent = true,
+			-- transparent = true,
 		},
 		config = function(_, opts)
 			require("sugoi").setup(opts)

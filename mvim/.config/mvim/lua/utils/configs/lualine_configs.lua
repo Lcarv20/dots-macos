@@ -624,6 +624,10 @@ M.cosmicink = function()
 	return config
 end
 
+--- Creates a lualine component to display the currently recording macro.
+-- @param colors table A table with `fg` and `bg` color strings.
+-- @param separator table A table with `left` and `right` separator strings.
+-- @return table A lualine component table.
 M.recording = function(colors, separator)
 	return {
 		function()
@@ -631,11 +635,15 @@ M.recording = function(colors, separator)
 		end,
 		icon = "󰑊",
 		color = { fg = colors.fg, bg = colors.bg, gui = "bold" }, -- pastel red bg, dark gray fg
-		separator = { rignt = separator.right, left = separator.left },
-		left_padding = 2,
+		separator = { right = separator.right, left = separator.left },
+		-- left_padding = 2,
 	}
 end
 
+--- Creates a lualine component to display the last executed macro.
+-- @param colors table A table with `fg` and `bg` color strings.
+-- @param separator table A table with `left` and `right` separator strings.
+-- @return table A lualine component table.
 M.recorded = function(colors, separator)
 	return {
 		function()
@@ -643,7 +651,7 @@ M.recorded = function(colors, separator)
 		end,
 		icon = "󰐊",
 		color = { fg = colors.fg, bg = colors.bg, gui = "bold" }, -- pastel red bg, dark gray fg
-		separator = { rignt = separator.right, left = separator.left },
+		separator = { right = separator.right, left = separator.left },
 	}
 end
 
@@ -768,7 +776,7 @@ M.lcarv_evil = function()
 			return "%="
 		end,
 	})
-	ins_left(M.recorded({ fg = colors.green, bg = colors.bg }, { right = "/", left = "" }))
+	ins_left(M.recorded({ fg = colors.green, bg = colors.bg }, { right = "", left = "" }))
 	ins_left(M.recording({ fg = colors.red, bg = colors.bg }, { right = "", left = "" }))
 
 	ins_right({
@@ -811,6 +819,9 @@ M.lcarv_evil = function()
 	return config
 end
 
+--- Returns a lualine configuration with the 'gemini' theme.
+-- This theme uses pill-shaped components for a modern look.
+-- @return table A complete lualine configuration table.
 M.gemini = function()
 	local colors = require("utils.colors").colors()
 	local pill_bg = "#212121"
@@ -1005,7 +1016,7 @@ M.gemini = function()
 				return "🭪"
 			end,
 			color = { fg = colors.mauve, bg = pill_bg },
-      padding = 0
+			padding = 0,
 		},
 		mode_comp,
 		{
@@ -1046,10 +1057,10 @@ M.gemini = function()
 	})
 
 	if M.recorded then
-		ins_left(M.recorded({ fg = colors.green }, { right = "/", left = "" }))
+		ins_left(pill({ M.recorded({ fg = colors.green }, { right = "", left = "" }) }, { fg = colors.green }))
 	end
 	if M.recording then
-		ins_left(M.recording({ fg = colors.red }, { right = "", left = "" }))
+		ins_left(pill({ M.recording({ fg = colors.red }, { right = "", left = "" }) }))
 	end
 
 	ins_right(pill({
