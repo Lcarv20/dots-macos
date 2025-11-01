@@ -19,11 +19,11 @@ return {
 			lua = { "stylua" },
 			-- Conform can also run multiple formatters sequentially
 			-- python = { "isort", "black" },
-			javascript = { "prettier", stop_after_first = true },
-			astro = { "prettier" },
-			typescript = { "prettier", stop_after_first = true },
-			javascriptreact = { "prettier", stop_after_first = true },
-			typescriptreact = { "prettier", stop_after_first = true },
+			javascript = { "biome", "biome-organize-imports" },
+			javascriptreact = { "biome", "biome-organize-imports" },
+			typescript = { "biome", "biome-organize-imports" },
+			typescriptreact = { "biome", "biome-organize-imports" },
+      astro = { "prettier", stop_after_first = true },
 		},
 	},
 }

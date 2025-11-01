@@ -14,9 +14,9 @@ vim.keymap.set("n", "<esc>", function()
 	vim.cmd("nohlsearch")
 end, ignore)
 map({ "i", "x", "n", "s" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
-map("n", "<leader>q", "", { desc = "Session" })
-map("n", "<leader>qa", "<cmd>qa<cr>", { desc = "Quit All" })
-map("n", "<leader>qq", "<cmd>q<cr>", { desc = "Quit current" })
+map("n", "<leader>q", "", { desc = "Session", noremap = true })
+map("n", "<leader>qa", "<cmd>qa<cr>", { desc = "Quit All" , noremap = true})
+map("n", "<leader>qq", "<cmd>q<cr>", { desc = "Quit current", noremap = true})
 
 -- Maintain scroll in the middle
 map("n", "<C-d>", "<C-d>zz")

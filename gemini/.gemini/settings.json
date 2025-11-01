@@ -57,7 +57,7 @@
       "enabled": true
     },
     "preferredEditor": "mvim",
-    "vimMode": false
+    "vimMode": true
   },
   "ide": {
     "enabled": true
