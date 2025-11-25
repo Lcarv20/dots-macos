@@ -33,6 +33,11 @@
       ]
     }
   },
+  "mcp": {
+    "excluded": [
+      "github"
+    ]
+  },
   "ui": {
     "showLineNumbers": true,
     "showCitations": true,
