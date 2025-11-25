@@ -7,13 +7,21 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  // "icon_theme": "Min Icons",
+  "edit_predictions": {
+    "mode": "subtle"
+  },
+  "icon_theme": "Bearded Icon Theme",
   "context_servers": {
     "mcp-server-context7": {
       "source": "extension",
       "settings": {
-        "default_minimum_tokens": "10000"
+        "context7_api_key": "ctx7sk-c893041e-ba59-4eef-9cb1-18f9deaf42c0"
       }
+    },
+    "chrome-devtools": {
+      "source": "custom",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
     }
   },
   "tab_bar": {
@@ -26,71 +34,65 @@
   "project_panel": {
     "dock": "left"
   },
-  "language_models": {
-    "openai": {
-      "api_url": "https://openrouter.ai/api/v1",
-      "available_models": [
-        {
-          "name": "deepseek/deepseek-r1:free",
-          "display_name": "deepseek r1",
-          "max_tokens": 64000
-        },
-        {
-          "name": "deepseek/deepseek-chat-v3-0324:free",
-          "display_name": "deepseek v3",
-          "max_tokens": 64000
-        }
-      ]
-    }
-  },
-  // "language_models": {
-  //   "google": {
-  //     "available_models": [
-  //       {
-  //         "name": "gemini-2.0-flash-exp",
-  //         "display_name": "Gemini 2.0 Flash Experimental",
-  //         "max_tokens": 1048576
-  //       },
-  //       {
-  //         "name": "gemini-exp-1206",
-  //         "display_name": "Gemini Experimental",
-  //         "max_tokens": 1048576
-  //       }
-  //     ]
-  //   }
-  // },
   "agent": {
+    "inline_assistant_model": {
+      "provider": "google",
+      "model": "gemini-2.5-flash"
+    },
+    "always_allow_tool_actions": true,
     "default_profile": "write",
     "play_sound_when_agent_done": false,
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-5-mini"
+      "provider": "google",
+      "model": "gemini-3-pro-preview"
     }
   },
-  // "edit_predictions": {
-  //   "mode": "subtle"
-  // },
+
   "features": {
-    "edit_prediction_provider": "zed"
-    // "copilot": false,
-    // "supermaven": false
+    // "edit_prediction_provider": "zed",
+    // "edit_prediction_provider": "copilot",
+    "edit_prediction_provider": "codestral"
+    // "edit_prediction_provider": "supermaven"
   },
   "telemetry": {
     "metrics": true
   },
-
   // 🎨 theme settings
-  "theme": {
-    "mode": "system",
-    "light": "Lcarv Mint Light (Solid)",
-    "dark": "Lcarv Mint Dark (Blurred)"
-  },
+  "theme": "Lcarv Mint Dark (Solid)",
+
+  // "experimental.theme_overrides": {
+  //   "background.appearance": "blurred",
+  //   "background": "#09090bBB",
+  //   "panel.background": "#00000000",
+  //   "editor.background": "#00000000",
+  //   "tab_bar.background": "#00000000",
+  //   "terminal.background": "#00000000",
+  //   "toolbar.background": "#00000000",
+  //   "tab.inactive_background": "#00000000",
+  //   "tab.active_background": "#3f3f4650",
+  //   "border": "#00000000",
+  //   "status_bar.background": "#09090bBB",
+  //   "title_bar.background": "#09090bBB",
+  //   "border.variant": "#00000000",
+  //   "scrollbar.track.background": "#52525b20",
+  //   "scrollbar.track.border": "#00000000",
+  //   "scrollbar.thumb.background": "#52525b30",
+  //   "scrollbar.thumb.border": "#00000000",
+  //   "elevated_surface.background": "#90",
+  //   "surface.background": "#90",
+  //   "editor.active_line_number": "#ffffffcc",
+  //   "editor.gutter.background": "#00000000",
+  //   "editor.indent_guide": "#ffffff30",
+  //   "editor.indent_guide_active": "#ffffff80",
+  //   "editor.line_number": "#ffffff80",
+  //   "editor.active_line.background": "#3f3f4620"
+  // },
 
   // 🖼️ background settings
   "terminal": {
     "font_size": 14,
     "font_family": "CaskaydiaCove Nerd Font",
-    "line_height": { "custom": 1.15 },
+    "line_height": { "custom": 1.2 },
     "font_weight": 500
   },
 
@@ -114,11 +116,11 @@
   "buffer_font_size": 14.0,
 
   // disable cursor blink
-  "cursor_blink": true,
-  "cursor_shape": "hollow",
+  "cursor_blink": false,
+  // "cursor_shape": "hollow",
 
   // use relative line numbers
-  "relative_line_numbers": true,
+  "relative_line_numbers": "wrapped",
 
   // hide the scroll bar
   "scrollbar": {
@@ -130,6 +132,24 @@
   "git": {
     "inline_blame": {
       "enabled": false
+    }
+  },
+
+  "lsp": {
+    "biome": {
+      "settings": {
+        "require_config_file": true
+      }
+    },
+    "vscode-css-language-server": {
+      "settings": {
+        "css": {
+          "lint": {
+            "unknownAtRules": "ignore"
+            // "unknownProperties": "ignore"
+          }
+        }
+      }
     }
   }
 }

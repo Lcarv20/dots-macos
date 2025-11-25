@@ -1,6 +1,5 @@
 local map = vim.keymap.set
 local ignore = { desc = "which_key_ignore" }
-local fns = require("utils.fns")
 
 -- General
 map("n", "J", "mzJ`z") -- keep cursor in place

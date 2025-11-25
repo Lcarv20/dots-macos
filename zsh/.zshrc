@@ -172,3 +172,6 @@ export PATH="$PATH:/Users/lcarv/.lmstudio/bin"
 # Focus Editor
 export PATH="/Applications/Focus.app/Contents/MacOS:$PATH"
 
+
+# Added by Antigravity
+export PATH="/Users/lcarv/.antigravity/antigravity/bin:$PATH"
