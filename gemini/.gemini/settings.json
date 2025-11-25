@@ -75,7 +75,7 @@
     "enabled": true
   },
   "tools": {
-    "sandbox": false,
+    "sandbox": true,
     "shell": {
       "showColor": true
     }
