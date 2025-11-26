@@ -23,7 +23,7 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = "yes"
 vim.opt.smoothscroll = true
 vim.opt.conceallevel = 0 -- hide * markup for bold and italic, but not markers with substitutions
-vim.opt.concealcursor = "nvic"
+vim.opt.concealcursor = "nvc"
 vim.opt.guicursor =
 	"n:block-NCursor,ci:block-NoiceCursor,v:block-VCursor,i-ci-ve:block-ICursor,r-cr-o:block-RCursor,sm:block-ComCursor"
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer

@@ -71,7 +71,7 @@
     "checkpointing": {
       "enabled": true
     },
-    "preferredEditor": "mvim",
+    "preferredEditor": "zed",
     "vimMode": false,
     "previewFeatures": true,
     "enablePromptCompletion": true
