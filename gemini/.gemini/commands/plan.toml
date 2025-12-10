@@ -1,12 +1,12 @@
-description = "Generates a mandatory, step-by-step checklist plan for the next task based on project context files (PLAN.md and TASKS.md)."
+description = "Generates a mandatory, step-by-step checklist plan for the next task based on project context files (PLAN.md or plan.md)."
 
 # The prompt definition that the CLI sends to the Gemini API
 prompt = """
 **ROLE:** You are an expert developer assistant focused exclusively on project planning. Your goal is to generate a comprehensive, actionable plan for the given request.
 
 **CONTEXT INJECTION:**
-1.  Read and incorporate context from the project's local `PLAN.md` file (if it exists).
-2.  Read and incorporate context from the project's local `TASKS.md` file (if it exists).
+1.  Verify that the project's local `PLAN.md` file exists. If it doesn't exist, create it.
+2.  Read and incorporate context from the project's local `PLAN.md` or `plan.md` file (if it exists).
 
 **USER REQUEST:**
 {{ query }}

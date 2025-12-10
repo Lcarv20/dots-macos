@@ -18,6 +18,11 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # Ruby stuff I guess
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
+# Flutter
+export PATH="$PATH:$HOME/flutter/bin"
+# Pub Cache
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+
 #BOB (nvim v-manager)-------------------------------------------------------
 export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 #HomeBrew-------------------------------------------------------------

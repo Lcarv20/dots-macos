@@ -9,7 +9,7 @@
 	process = git-lfs filter-process
 	required = true
 [core]
-	editor = nvim
+	editor = NVIM_APPNAME=mvim nvim
 	excludesfile = /Users/lcarv/.gitignore_global
 	pager = delta
 	trustctime = false

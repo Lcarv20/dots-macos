@@ -35,7 +35,8 @@
   },
   "mcp": {
     "excluded": [
-      "github"
+      "github",
+      "Astro docs"
     ]
   },
   "ui": {
@@ -65,7 +66,8 @@
     "footer": {
       "hideContextPercentage": false
     },
-    "showModelInfoInChat": true
+    "showModelInfoInChat": true,
+    "useFullWidth": true
   },
   "general": {
     "checkpointing": {
@@ -74,23 +76,30 @@
     "preferredEditor": "zed",
     "vimMode": false,
     "previewFeatures": true,
-    "enablePromptCompletion": true
+    "enablePromptCompletion": false
   },
   "ide": {
     "enabled": true
   },
   "tools": {
-    "sandbox": true,
+    "sandbox": false,
     "shell": {
       "showColor": true
-    }
+    },
+    "useRipgrep": true
   },
   "security": {
     "auth": {
       "selectedType": "oauth-personal"
+    },
+    "folderTrust": {
+      "enabled": true
     }
   },
   "privacy": {
     "usageStatisticsEnabled": true
+  },
+  "output": {
+    "format": "text"
   }
 }

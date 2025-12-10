@@ -47,7 +47,7 @@ return {
 	{
 		"topazape/oldtale.nvim",
 		lazy = false,
-		enabled = false,
+		enabled = true,
 		priority = 1000,
 		config = function()
 			vim.cmd.colorscheme("oldtale")
@@ -98,7 +98,7 @@ return {
 		},
 		config = function(_, opts)
 			require("sugoi").setup(opts)
-			vim.cmd.colorscheme("sugoi") -- applies when you want
+			-- vim.cmd.colorscheme("sugoi") -- applies when you want
 		end,
 	},
 	-- Using Lazy

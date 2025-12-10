@@ -13,13 +13,11 @@
   "icon_theme": "Bearded Icon Theme",
   "context_servers": {
     "mcp-server-context7": {
-      "source": "extension",
       "settings": {
         "context7_api_key": "ctx7sk-c893041e-ba59-4eef-9cb1-18f9deaf42c0"
       }
     },
     "chrome-devtools": {
-      "source": "custom",
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"]
     }
@@ -33,6 +31,11 @@
   },
   "project_panel": {
     "dock": "left"
+  },
+  "agent_servers": {
+    "gemini": {
+      "ignore_system_version": true
+    }
   },
   "agent": {
     "inline_assistant_model": {
