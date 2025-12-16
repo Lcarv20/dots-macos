@@ -101,6 +101,8 @@ eval "$(zoxide init zsh)"
 eval "$(mise activate zsh)"
 
 eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"
+
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Code below is for transient prompt in zsh with starship   +
@@ -165,7 +167,7 @@ set-short-prompt() {
   fi
 }
 
-$HOME/.dotfiles/zsh/poke-colorscript
+$HOME/dots-macos/zsh/poke-colorscript
 
 # Added by Windsurf
 export PATH="/Users/lcarv/.codeium/windsurf/bin:$PATH"
