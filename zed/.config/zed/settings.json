@@ -42,7 +42,7 @@
       "provider": "google",
       "model": "gemini-2.5-flash"
     },
-    "always_allow_tool_actions": true,
+    "always_allow_tool_actions": false,
     "default_profile": "write",
     "play_sound_when_agent_done": false,
     "default_model": {

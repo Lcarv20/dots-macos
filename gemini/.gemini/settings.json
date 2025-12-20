@@ -1,4 +1,14 @@
 {
+  "general": {
+    "checkpointing": {
+      "enabled": true
+    },
+    "preferredEditor": "zed",
+    "vimMode": false,
+    "previewFeatures": true,
+    "enablePromptCompletion": false,
+    "disableAutoUpdate": true
+  },
   "mcpServers": {
     "context7": {
       "command": "npx",
@@ -68,15 +78,6 @@
     },
     "showModelInfoInChat": true,
     "useFullWidth": true
-  },
-  "general": {
-    "checkpointing": {
-      "enabled": true
-    },
-    "preferredEditor": "zed",
-    "vimMode": false,
-    "previewFeatures": true,
-    "enablePromptCompletion": false
   },
   "ide": {
     "enabled": true
