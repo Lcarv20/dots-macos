@@ -50,7 +50,7 @@ return {
 		enabled = true,
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme("oldtale")
+			-- vim.cmd.colorscheme("oldtale")
 		end,
 	},
 	{
@@ -60,13 +60,64 @@ return {
 		priority = 1000,
 		opts = {},
 		config = function()
-			-- vim.cmd.colorscheme("obscure")
+			vim.cmd.colorscheme("obscure")
 		end,
 	},
 	{
 		"khoido2003/classic_monokai.nvim",
 		lazy = false,
 		priority = 1000,
+		opts = {
+			-- Theme style: choose "dark" for classic Monokai or "light" for light mode
+			style = "dark", -- "dark" | "light"
+
+			-- Background style for dark mode: "default" (classic), "dark" (darker), "transparent", or a hex color (e.g. "#1a1a1a")
+			dark_style_background = "dark", -- "default" | "dark" | "transparent" | "#RRGGBB"
+			-- Background style for light mode: "default" (classic), "dark" (darker), "transparent", or a hex color
+			light_style_background = "default", -- "default" | "dark" | "transparent" | "#RRGGBB"
+
+			hl_styles = {
+				-- Enable/disable italic for comments
+				comments = { italic = true }, -- true | false
+				-- Enable/disable italic for keywords
+				keywords = { italic = true }, -- true | false
+				-- Enable/disable italic for functions
+				functions = { italic = true }, -- true | false
+				-- Enable/disable italic for variables
+				variables = { italic = false }, -- true | false
+				-- Background style for floating windows: "default", "dark", "transparent", or hex color
+				floats = "dark", -- "default" | "dark" | "transparent" | "#RRGGBB"
+				-- Background style for sidebars (nvim-tree, etc.): "default", "dark", "transparent", or hex color
+				sidebars = "default", -- "default" | "dark" | "transparent" | "#RRGGBB"
+			},
+
+			-- Automatically enable plugin integrations (set to false to manually control plugins)
+			auto_enable_plugins = true, -- true | false
+
+			-- Enable colored headers in markdown files
+			color_headers = true, -- true | false
+
+			-- Dim inactive windows for better focus
+			dim_inactive = false, -- true | false
+
+			-- Use bold font in lualine section headers
+			lualine_bold = true, -- true | false
+			-- Lualine background style: "default" (follows theme), "dark", or "light"
+			lualine_style = "default", -- "default" | "dark" | "light"
+
+			-- Highlight '#' in markdown headers
+			markdown_header_marks = false, -- true | false
+
+			-- Set terminal colors: true to enable, false to disable, or provide a table/function for custom colors
+			terminal_colors = true, -- true | false | table | function
+
+			-- Enable theme caching for better performance
+			cache = true, -- true | false
+		},
+		config = function(_, opts)
+			require("classic_monokai").setup(opts)
+			-- vim.cmd.colorscheme("classic-monokai")
+		end,
 	},
 	{
 		"Lcarv20/nvim-noirbuddy",
@@ -84,12 +135,12 @@ return {
 		},
 		name = "lcarv-noir",
 		config = function()
-			vim.cmd.colorscheme("lcarv-noir")
+			-- vim.cmd.colorscheme("lcarv-noir")
 		end,
 	},
 	{
 		"Lcarv20/sugoi.nvim",
-    -- dir = "~/Developer/nvim-plugins/sugoi.nvim",
+		-- dir = "~/Developer/nvim-plugins/sugoi.nvim",
 		dependencies = { "tjdevries/colorbuddy.nvim" },
 		lazy = false,
 		priority = 1000,

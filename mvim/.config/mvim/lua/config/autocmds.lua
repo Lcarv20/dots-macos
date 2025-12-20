@@ -96,10 +96,10 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "markdown_inline", "codecompanion" },
+	pattern = { "codecompanion" },
 	callback = function()
 		vim.opt_local.conceallevel = 3
-		vim.opt_local.concealcursor = "nvic"
+		vim.opt_local.concealcursor = "n"
 	end,
 })
 
@@ -147,7 +147,6 @@ vim.api.nvim_create_autocmd("LspProgress", {
 		})
 	end,
 })
-
 
 -- Cursor style
 vim.api.nvim_create_autocmd({ "ColorScheme", "WinEnter" }, {
