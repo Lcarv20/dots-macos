@@ -67,6 +67,19 @@
       "permission": {
         "edit": "allow"
       }
+    },
+    "ask": {
+      "description": "Analyzes code and provides useful short info with examples or code seen",
+      "mode": "all",
+      "prompt": "You analyze code and provide useful short information with examples or code you've seen. Read files to understand the codebase, but do not edit files. If you need to run commands, ask for permission first. Focus on being concise and providing actionable insights with relevant code snippets or examples.",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true
+      },
+      "permission": {
+        "bash": "ask"
+      }
     }
   },
   "provider": {
