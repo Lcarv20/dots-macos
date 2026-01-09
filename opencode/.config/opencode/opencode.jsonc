@@ -16,12 +16,24 @@
     "webfetch": true
   },
   "mcp": {
+    // "tavily": {
+    //   "type": "local",
+    //   "enabled": true,
+    //   "command": [
+    //     "npx",
+    //     "-y",
+    //     "@tavily-ai/tavily-mcp"
+    //   ],
+    //   "environment": {
+    //     "TAVILY_API_KEY": "TAVILY_API_KEY"
+    //   }
+    // },
     "tavily-mcp": {
       "type": "remote",
-      "url": "https://mcp.tavily.com/mcp/",
-      "headers": {
-        "Authorization": "Bearer ${TAVILY_API_KEY}"
-      }
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=${TAVILY_API_KEY}",
+      // "headers": {
+      //   "Authorization": "Bearer ${TAVILY_API_KEY}"
+      // }
     },
     "context7": {
       "type": "remote",
@@ -62,10 +74,10 @@
       "tools": {
         "write": true,
         "edit": true,
-        "bash": true
+        "bash": true,
       },
       "permission": {
-        "edit": "allow"
+        "edit": "allow",
       }
     },
     "ask": {
