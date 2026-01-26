@@ -69,7 +69,12 @@
         "Comment": "#bdb54d",
         "DiffAdded": "#12331b",
         "DiffRemoved": "#422219",
-        "DiffModified": "#caaf00"
+        "DiffModified": "#caaf00",
+        "GradientColors": [
+          "#4796E4",
+          "#847ACE",
+          "#C3677F"
+        ]
       }
     },
     "theme": "lcarv",

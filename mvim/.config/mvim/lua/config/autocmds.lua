@@ -180,6 +180,11 @@ vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+	command = "if mode() != 'c' | checktime | endif",
+	pattern = "*",
+})
+
 -- Set the title on startup
 local project_name = find_project_root() or "Neovim"
 vim.opt.title = true

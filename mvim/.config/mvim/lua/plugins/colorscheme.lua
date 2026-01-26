@@ -60,7 +60,7 @@ return {
 		priority = 1000,
 		opts = {},
 		config = function()
-			vim.cmd.colorscheme("obscure")
+			-- vim.cmd.colorscheme("obscure")
 		end,
 	},
 	{
@@ -149,7 +149,7 @@ return {
 		},
 		config = function(_, opts)
 			require("sugoi").setup(opts)
-			-- vim.cmd.colorscheme("sugoi") -- applies when you want
+			vim.cmd.colorscheme("sugoi") -- applies when you want
 		end,
 	},
 	-- Using Lazy
