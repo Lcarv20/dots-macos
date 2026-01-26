@@ -24,8 +24,8 @@ vim.opt.signcolumn = "yes"
 vim.opt.smoothscroll = true
 vim.opt.conceallevel = 0 -- hide * markup for bold and italic, but not markers with substitutions
 vim.opt.concealcursor = "nvc"
-vim.opt.guicursor =
-	"n:block-NCursor,ci:block-NoiceCursor,v:block-VCursor,i-ci-ve:block-ICursor,r-cr-o:block-RCursor,sm:block-ComCursor"
+-- vim.opt.guicursor =
+-- 	"n:block-NCursor,ci:block-NoiceCursor,v:block-VCursor,i-ci-ve:block-ICursor,r-cr-o:block-RCursor,sm:block-ComCursor"
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer
 vim.opt.updatetime = 200
 vim.opt.swapfile = false
@@ -68,3 +68,5 @@ vim.opt.winminwidth = 5
 vim.g.markdown_recommended_style = 0
 
 vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
+
+vim.opt.autoread = true

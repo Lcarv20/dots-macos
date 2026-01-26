@@ -13,6 +13,7 @@ permission:
     "git diff": allow
     "pnpm list*": allow
     "bun pm list*": allow
+    "rg": allow
     "*": ask
 ---
 
