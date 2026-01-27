@@ -1,6 +1,6 @@
 return {
 	"OXY2DEV/markview.nvim",
-	enabled = true,
+	enabled = false,
 	lazy = true,
 	ft = { "markdown", "norg", "rmd", "org", "codecompanion", "Avante", "neochat" },
 	opts = function(_, opts)

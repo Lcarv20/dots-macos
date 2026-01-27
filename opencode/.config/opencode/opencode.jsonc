@@ -1,15 +1,17 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "openai/gpt-oss-20b",
   "permission": {
     "edit": "ask",
+    "write": "ask",
     "bash": {
+      "*": "ask",
       "ls": "allow",
       "pwd": "allow",
       "git status": "allow",
       "git diff*": "allow",
       "git add*": "allow",
-      "git log*": "allow",
-      "*": "ask"
+      "git log*": "allow"
     }
   },
   "tools": {
@@ -19,14 +21,6 @@
     "opencode-gemini-auth@latest"
   ],
   "mcp": {
-    "dart": {
-      "type": "local",
-      "command": [
-        "dart",
-        "mcp-server"
-      ],
-      "enabled": false
-    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
@@ -41,15 +35,20 @@
         "mgrep",
         "mcp"
       ]
-    },
+    }
   },
   "agent": {
     "plan": {
       "mode": "primary",
       "tools": {
-        "write": false,
-        "edit": false,
+        "write": true,
+        "edit": true,
         "bash": true
+      },
+      "permission": {
+        "write": "ask",
+        "edit": "ask",
+        "bash": "ask" // Overrides global: even 'ls' requires permission in Plan
       }
     },
     "build": {
@@ -58,6 +57,11 @@
         "write": true,
         "edit": true,
         "bash": true
+      },
+      "permission": {
+        "write": "ask", // Explicitly added so it stops writing without asking
+        "edit": "ask"
+        // Bash is omitted here so it inherits your global "safe" list
       }
     },
     "autoaccept": {
@@ -65,10 +69,12 @@
       "tools": {
         "write": true,
         "edit": true,
-        "bash": true,
+        "bash": true
       },
       "permission": {
         "edit": "allow",
+        "write": "allow"
+        // Inherits global bash: 'ls' is allowed, others are 'ask'
       }
     },
     "yolo": {
@@ -77,34 +83,17 @@
         "write": true,
         "edit": true,
         "bash": true
-      }
-    },
-    "ask": {
-      "description": "Analyzes code and provides useful short info with examples or code seen",
-      "mode": "all",
-      "prompt": "You analyze code and provide useful short information with examples or code you've seen. Read files to understand the codebase, but do not edit files. If you need to run commands, ask for permission first. Focus on being concise and providing actionable insights with relevant code snippets or examples.",
-      "tools": {
-        "write": false,
-        "edit": false,
-        "bash": true
       },
       "permission": {
-        "bash": "ask"
-      }
-    }
-  },
-  "provider": {
-    "lmstudio": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "LM Studio (local)",
-      "options": {
-        "baseURL": "http://127.0.0.1:1234/v1"
-      },
-      "models": {
-        "openai/gpt-oss-20b": {
-          "name": "OpenAI GPT-OSS-20b (local)"
+        "edit": "allow",
+        "write": "allow",
+        "bash": {
+          "*": "allow", // Wildcard FIRST
+          "rm -rf /": "deny", // Specific blocks LAST so they win
+          "rm -rf *": "deny",
+          "mkfs*": "deny"
         }
       }
-    }
-  },
+    },
+  }
 }
