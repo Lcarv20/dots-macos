@@ -8,40 +8,67 @@
       "*": "ask",
       "ls": "allow",
       "pwd": "allow",
+      "date": "allow",
+      "fd*": "allow",
+      "rg*": "allow",
+      "cat*": "allow",
+      "head*": "allow",
+      "tail*": "allow",
+      "grep*": "allow",
+      "find*": "allow",
+      "echo*": "allow",
+      "stat*": "allow",
+      "which*": "allow",
       "git status": "allow",
-      "git diff*": "allow"
-      // Removed git add and git log from global allow to be safe
+      "git diff*": "allow",
+      "git branch": "allow",
+      "git log": "allow"
     }
   },
   "tools": {
     "webfetch": true
   },
-  "plugin": ["opencode-gemini-auth@latest"],
+  "plugin": [
+    "opencode-gemini-auth@latest"
+  ],
   "mcp": {
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
-      "headers": { "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}" },
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      },
       "enabled": true
     },
     "mgrep": {
       "type": "local",
-      "command": ["mgrep", "mcp"]
+      "command": [
+        "mgrep",
+        "mcp"
+      ]
     }
   },
   "agent": {
     "plan": {
       "mode": "primary",
-      "tools": { "write": true, "edit": true, "bash": true },
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
       "permission": {
         "write": "ask",
         "edit": "ask",
-        "bash": "ask" 
+        "bash": "ask"
       }
     },
     "build": {
       "mode": "primary",
-      "tools": { "write": true, "edit": true, "bash": true },
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
       "permission": {
         "write": "ask",
         "edit": "ask",
@@ -56,7 +83,11 @@
     },
     "autoaccept": {
       "mode": "primary",
-      "tools": { "write": true, "edit": true, "bash": true },
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
       "permission": {
         "edit": "allow",
         "write": "allow",
@@ -71,7 +102,11 @@
     },
     "yolo": {
       "mode": "primary",
-      "tools": { "write": true, "edit": true, "bash": true },
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
       "permission": {
         "edit": "allow",
         "write": "allow",

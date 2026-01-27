@@ -5,7 +5,7 @@ displayed_workdir = ""
 auto_compact_threshold = 200000
 context_warnings = false
 textual_theme = "terminal"
-instructions = "Always respect AGENTS.md and PROJECTS.md files in your project root."
+instructions = "Always when starting always read and  respect AGENTS.md and PROJECTS.md files in your project root."
 system_prompt_id = "cli"
 include_model_info = true
 include_project_context = true
@@ -16,72 +16,30 @@ tool_paths = []
 enabled_tools = []
 disabled_tools = []
 
-# Use stdio transport for the Context7 MCP server
 [[mcp_servers]]
 name = "context7"
 transport = "stdio"
-command = "bunx"  # Or "bunx" / "npx"
-args = ["-y", "@upstash/context7-mcp@latest"]
+command = "bunx"
+args = [
+    "-y",
+    "@upstash/context7-mcp@latest",
+]
 
-# (Optional) Auto-approve the tools so you aren't prompted every time
+[[mcp_servers]]
+name = "tavily"
+transport = "stdio"
+command = "npx"
+args = [
+    "-y",
+    "mcp-remote",
+    "https://mcp.tavily.com/mcp/?tavilyApiKey=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",
+]
+
 [tools.context7_resolve_library_id]
 permission = "always"
 
 [tools.context7_query_docs]
 permission = "always"
-
-[[providers]]
-name = "mistral"
-api_base = "https://api.mistral.ai/v1"
-api_key_env_var = "MISTRAL_API_KEY"
-api_style = "openai"
-backend = "mistral"
-
-[[providers]]
-name = "llamacpp"
-api_base = "http://127.0.0.1:8080/v1"
-api_key_env_var = ""
-api_style = "openai"
-backend = "generic"
-
-[[models]]
-name = "mistral-vibe-cli-latest"
-provider = "mistral"
-alias = "devstral-2"
-temperature = 0.2
-input_price = 0.4
-output_price = 2.0
-
-[[models]]
-name = "devstral-small-latest"
-provider = "mistral"
-alias = "devstral-small"
-temperature = 0.2
-input_price = 0.1
-output_price = 0.3
-
-[[models]]
-name = "devstral"
-provider = "llamacpp"
-alias = "local"
-temperature = 0.2
-input_price = 0.0
-output_price = 0.0
-
-[project_context]
-max_chars = 40000
-default_commit_count = 5
-max_doc_bytes = 32768
-truncation_buffer = 1000
-max_depth = 3
-max_files = 1000
-max_dirs_per_level = 20
-timeout_seconds = 2.0
-
-[session_logging]
-save_dir = "/Users/lcarv/.vibe/logs/session"
-session_prefix = "session"
-enabled = true
 
 [tools.search_replace]
 permission = "ask"
@@ -198,3 +156,55 @@ denylist = []
 max_write_bytes = 64000
 create_parent_dirs = true
 
+[[providers]]
+name = "mistral"
+api_base = "https://api.mistral.ai/v1"
+api_key_env_var = "MISTRAL_API_KEY"
+api_style = "openai"
+backend = "mistral"
+
+[[providers]]
+name = "llamacpp"
+api_base = "http://127.0.0.1:8080/v1"
+api_key_env_var = ""
+api_style = "openai"
+backend = "generic"
+
+[[models]]
+name = "mistral-vibe-cli-latest"
+provider = "mistral"
+alias = "devstral-2"
+temperature = 0.2
+input_price = 0.4
+output_price = 2.0
+
+[[models]]
+name = "devstral-small-latest"
+provider = "mistral"
+alias = "devstral-small"
+temperature = 0.2
+input_price = 0.1
+output_price = 0.3
+
+[[models]]
+name = "devstral"
+provider = "llamacpp"
+alias = "local"
+temperature = 0.2
+input_price = 0.0
+output_price = 0.0
+
+[project_context]
+max_chars = 40000
+default_commit_count = 5
+max_doc_bytes = 32768
+truncation_buffer = 1000
+max_depth = 3
+max_files = 1000
+max_dirs_per_level = 20
+timeout_seconds = 2.0
+
+[session_logging]
+save_dir = "/Users/lcarv/.vibe/logs/session"
+session_prefix = "session"
+enabled = true
