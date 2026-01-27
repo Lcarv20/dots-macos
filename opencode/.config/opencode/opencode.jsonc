@@ -9,91 +9,79 @@
       "ls": "allow",
       "pwd": "allow",
       "git status": "allow",
-      "git diff*": "allow",
-      "git add*": "allow",
-      "git log*": "allow"
+      "git diff*": "allow"
+      // Removed git add and git log from global allow to be safe
     }
   },
   "tools": {
     "webfetch": true
   },
-  "plugin": [
-    "opencode-gemini-auth@latest"
-  ],
+  "plugin": ["opencode-gemini-auth@latest"],
   "mcp": {
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
-      },
+      "headers": { "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}" },
       "enabled": true
     },
     "mgrep": {
       "type": "local",
-      "command": [
-        "mgrep",
-        "mcp"
-      ]
+      "command": ["mgrep", "mcp"]
     }
   },
   "agent": {
     "plan": {
       "mode": "primary",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
+      "tools": { "write": true, "edit": true, "bash": true },
       "permission": {
         "write": "ask",
         "edit": "ask",
-        "bash": "ask" // Overrides global: even 'ls' requires permission in Plan
+        "bash": "ask" 
       }
     },
     "build": {
       "mode": "primary",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
+      "tools": { "write": true, "edit": true, "bash": true },
       "permission": {
-        "write": "ask", // Explicitly added so it stops writing without asking
-        "edit": "ask"
-        // Bash is omitted here so it inherits your global "safe" list
+        "write": "ask",
+        "edit": "ask",
+        "bash": {
+          "*": "ask",
+          "ls": "allow",
+          "pwd": "allow",
+          "git status": "allow",
+          "git diff*": "allow"
+        }
       }
     },
     "autoaccept": {
       "mode": "primary",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
-      "permission": {
-        "edit": "allow",
-        "write": "allow"
-        // Inherits global bash: 'ls' is allowed, others are 'ask'
-      }
-    },
-    "yolo": {
-      "mode": "primary",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
+      "tools": { "write": true, "edit": true, "bash": true },
       "permission": {
         "edit": "allow",
         "write": "allow",
         "bash": {
-          "*": "allow", // Wildcard FIRST
-          "rm -rf /": "deny", // Specific blocks LAST so they win
+          "*": "ask", // Forces asking for everything else (like commit)
+          "ls": "allow",
+          "pwd": "allow",
+          "git status": "allow",
+          "git diff*": "allow"
+        }
+      }
+    },
+    "yolo": {
+      "mode": "primary",
+      "tools": { "write": true, "edit": true, "bash": true },
+      "permission": {
+        "edit": "allow",
+        "write": "allow",
+        "bash": {
+          "*": "allow",
+          "rm -rf /": "deny",
           "rm -rf *": "deny",
           "mkfs*": "deny"
         }
       }
-    },
+    }
   }
 }
