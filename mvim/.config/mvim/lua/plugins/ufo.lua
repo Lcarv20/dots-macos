@@ -10,6 +10,17 @@ return {
 		-- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
 		-- vim.keymap.set("n", "zR", require("ufo").openAllFolds)
 		-- vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
-		require("ufo").setup()
+		require("ufo").setup({
+			close_fold_kinds_for_ft = {
+				default = { "imports", "comment" },
+			},
+			provider_selector = function(_, filetype, buftype)
+				-- If it's a dashboard or special buffer, return empty to disable UFO
+				if filetype == "snacks_dashboard" or buftype == "nofile" then
+					return ""
+				end
+				return nil -- Default behavior for everything else
+			end,
+		})
 	end,
 }
