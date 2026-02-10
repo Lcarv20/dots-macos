@@ -1,3 +1,5 @@
+local fns = require("utils.fns")
+
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
@@ -156,26 +158,10 @@ vim.api.nvim_create_autocmd({ "ColorScheme", "WinEnter" }, {
 	end,
 })
 
--- Find the project root by searching for a marker file like .git
-local function find_project_root()
-	local dir = vim.fn.getcwd()
-	local path_to_search = vim.fs.normalize(dir)
-	local marker_files = vim.fs.find(
-		{ ".git", "package.json", "go.mod" },
-		{ path = path_to_search, upward = true, stop = vim.env.HOME }
-	)
-	if marker_files and #marker_files > 0 then
-		local root_dir = vim.fs.dirname(marker_files[1])
-		local project_name = vim.fs.basename(root_dir)
-		return project_name
-	end
-	return nil
-end
-
 -- Update the terminal title when the buffer changes
 vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
 	callback = function()
-		local project_name = find_project_root() or "Neovim"
+		local project_name = fns.find_project_root() or "Neovim"
 		vim.opt.titlestring = string.format(" %s |  %%t", project_name)
 	end,
 })
@@ -184,8 +170,3 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
 	command = "if mode() != 'c' | checktime | endif",
 	pattern = "*",
 })
-
--- Set the title on startup
-local project_name = find_project_root() or "Neovim"
-vim.opt.title = true
-vim.opt.titlestring = string.format(" - %s | %%t", project_name)

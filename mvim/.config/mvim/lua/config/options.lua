@@ -1,3 +1,5 @@
+local fns = require("utils.fns")
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -70,3 +72,8 @@ vim.g.markdown_recommended_style = 0
 vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
 vim.opt.autoread = true
+
+-- Set the title on startup
+local project_name = fns.find_project_root() or "Neovim"
+vim.opt.title = true
+vim.opt.titlestring = string.format(" - %s | %%t", project_name)
