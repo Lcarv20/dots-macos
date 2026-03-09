@@ -1,3 +1,7 @@
+
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
 # Created by Zap installer
 [ -f "$HOME/.local/share/zap/zap.zsh" ] && source "$HOME/.local/share/zap/zap.zsh"
 plug "zsh-users/zsh-autosuggestions"
@@ -24,7 +28,6 @@ export PATH="$PATH:$HOME/flutter/bin"
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 #BOB (nvim v-manager)-------------------------------------------------------
-export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 #HomeBrew-------------------------------------------------------------
 export PATH=/opt/homebrew/sbin:$PATH
 # source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -76,6 +79,11 @@ alias vscommit='GIT_EDITOR="code --wait" git commit'
 alias zcommit='GIT_EDITOR="zed --wait" git commit'
 # Xcode
 alias xcommit='GIT_EDITOR="xed -w" git commit'
+
+# Opencode
+alias opencode='OPENCODE_EXPERIMENTAL_MARKDOWN=true opencode'
+# KILO
+alias kilo='KILO_EXPERIMENTAL_MARKDOWN=true kilo'
 
 # completions dir
 fpath+=~/.zfunc
@@ -187,3 +195,15 @@ fpath=(/Users/lcarv/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+# pnpm
+export PNPM_HOME="/Users/lcarv/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

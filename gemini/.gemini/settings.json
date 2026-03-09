@@ -8,7 +8,15 @@
     "previewFeatures": true,
     "enablePromptCompletion": false,
     "disableAutoUpdate": true,
-    "enableAutoUpdate": false
+    "enableAutoUpdate": false,
+    "sessionRetention": {
+      "warningAcknowledged": true,
+      "enabled": true,
+      "maxAge": "30d"
+    }
+  },
+  "experimental": {
+    "plan": true
   },
   "mcpServers": {
     "context7": {
@@ -57,12 +65,16 @@
         ]
       }
     },
-    "theme": "Dracula",
+    "theme": "Default",
     "footer": {
       "hideContextPercentage": false
     },
     "showModelInfoInChat": true,
-    "useFullWidth": true
+    "useFullWidth": true,
+    "inlineThinkingMode": "full",
+    "showStatusInTitle": true,
+    "showUserIdentity": true,
+    "useAlternateBuffer": false
   },
   "ide": {
     "enabled": true
@@ -72,13 +84,17 @@
     "shell": {
       "showColor": true
     },
-    "useRipgrep": true
+    "useRipgrep": true,
+    "disableLLMCorrection": false
   },
   "security": {
     "auth": {
       "selectedType": "oauth-personal"
     },
     "folderTrust": {
+      "enabled": true
+    },
+    "environmentVariableRedaction": {
       "enabled": true
     }
   },
