@@ -32,6 +32,3 @@ Your immediate goal is to understand the request, consult the `PLAN.md` file for
 
 ## Gemini Added Memories
 - Use `rg` instead of `grep` for searching file contents.
-- The sidebars were overhauled to use a modular system (Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarSection) in BaseSidebar.tsx. Both sidebars are now collapsible and share consistent styling.
-- Always use `rg` (ripgrep) instead of `grep` for searching file contents, as it is faster and more efficient in this project's environment.
-- The project has been fully migrated to a unified structure in the root `src` directory. Legacy v1 code and the `v2` prefix have been removed. Export functionality with FireFlutter (Flame), Love2D, and JSON formats has been added to the Preview panel.

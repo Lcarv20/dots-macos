@@ -5,13 +5,22 @@
       "options": {
         "apiKey": "49d611af84f241b68a819718eaea55e9.Bi9qXtXsqhjBtEuV"
       }
-    }
-  },
-  "tui": {
-    "scroll_acceleration": {
-      "enabled": true
     },
-    "diff_style": "auto"
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1"
+      },
+      "models": {
+        "qwen3.5-9b": {
+          "name": "Qwen 3.5 9B",
+        },
+        "qwen3.5-27b": {
+          "name": "Qwen 3.5 27B",
+        },
+      }
+    }
   },
   "permission": {
     "edit": "ask",
@@ -41,7 +50,8 @@
     "webfetch": true
   },
   "plugin": [
-    "opencode-gemini-auth@latest"
+    "opencode-gemini-auth@latest",
+    // "@franlol/opencode-md-table-formatter@0.0.3"
   ],
   "mcp": {
     "context7": {
