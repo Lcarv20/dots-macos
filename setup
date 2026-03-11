@@ -8,6 +8,7 @@ set -euo pipefail
 # --- Configuration ---
 LOG_FILE="setup.log"  # Default log file name
 LOGGING=false
+DRY_RUN=false
 
 # Function to show a help message
 show_help() {
@@ -16,8 +17,9 @@ show_help() {
     echo "A script to set up the development environment by installing packages and stowing dotfiles."
     echo ""
     echo "Options:"
-    echo "  -l, --log    Enable logging to setup.log"
-    echo "  -h, --help   Show this help message and exit"
+    echo "  -l, --log      Enable logging to setup.log"
+    echo "  -d, --dry-run  Show what would be done without making changes"
+    echo "  -h, --help     Show this help message and exit"
     exit 0
 }
 
@@ -26,6 +28,10 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         -l|--log)
             LOGGING=true
+            shift
+            ;;
+        -d|--dry-run)
+            DRY_RUN=true
             shift
             ;;
         -h|--help)
@@ -76,6 +82,22 @@ install_package() {
     shift
     local install_command=("$@")
     local message="    Installing $pkg"
+    
+    # Handle dry run
+    if [ "$DRY_RUN" = true ]; then
+        local cmd_str="${install_command[*]} $pkg"
+        if [ "$LOGGING" = true ]; then
+            {
+                echo "--- Log for: $cmd_str ---"
+                echo "DRY RUN: command not executed"
+                echo "--- End Log ---"
+                echo ""
+            } >> "$LOG_FILE"
+        fi
+        printf "\033[33m    ⚠ %s (dry run): %s\033[0m\n" "$pkg" "$cmd_str"
+        return 0
+    fi
+
     local temp_log_file
     temp_log_file=$(mktemp)
     local spin='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
@@ -106,6 +128,8 @@ install_package() {
     if [ $exit_code -eq 0 ]; then
         if grep -qi "already installed\|already satisfied" "$temp_log_file"; then
             printf "\033[32m    ✔ %s (already installed)\033[0m\n" "$pkg"
+        elif [ "$DRY_RUN" = true ]; then
+            printf "\033[33m    ⚠ %s (dry run)\033[0m\n" "$pkg"
         else
             printf "\033[32m    ✔ %s installed\033[0m\n" "$pkg"
         fi
@@ -138,6 +162,21 @@ run_with_spinner() {
     local message="$1"
     shift
     local command_to_run=("$@")
+    
+    # Handle dry run for generic commands
+    if [ "$DRY_RUN" = true ]; then
+        if [[ "${command_to_run[*]}" == *"stow"* ]]; then
+            command_to_run+=("-n")
+        elif [[ "${command_to_run[*]}" == *"mise"* ]]; then
+            # mise doesn't have a dry run for 'use -g', so we just echo it
+            printf "\033[33m    ⚠ (dry run) %s: %s\033[0m\n" "$message" "${command_to_run[*]}"
+            return 0
+        else
+            printf "\033[33m    ⚠ (dry run) %s: %s\033[0m\n" "$message" "${command_to_run[*]}"
+            return 0
+        fi
+    fi
+
     local temp_log_file
     temp_log_file=$(mktemp)
     local spin='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
@@ -166,7 +205,11 @@ run_with_spinner() {
     log_command_output "${command_to_run[*]}" "$temp_log_file"
 
     if [ $exit_code -eq 0 ]; then
-        printf "\033[32m    ✔ %s\033[0m\n" "$message"
+        if [ "$DRY_RUN" = true ]; then
+            printf "\033[33m    ⚠ %s (dry run)\033[0m\n" "$message"
+        else
+            printf "\033[32m    ✔ %s\033[0m\n" "$message"
+        fi
     else
         printf "\033[31m    ✖ %s\033[0m\n" "$message"
         echo "        └─ An error occurred. Full log from the command:" >&2
@@ -176,6 +219,100 @@ run_with_spinner() {
     fi
 
     rm -f "$temp_log_file"
+}
+
+# Global array used by multi_select to return selected indices (avoids subshell)
+typeset -ga _MULTI_SELECT_RESULT=()
+
+# Function to handle multi-select checkbox UI.
+# Results are stored in the global _MULTI_SELECT_RESULT array (1-based indices).
+multi_select() {
+    emulate -L zsh
+    setopt localoptions noxtrace nomonitor
+
+    _MULTI_SELECT_RESULT=()
+    local -a options=("$@")
+    local -a selected=()
+    local i
+    local num_options=${#options[@]}
+
+    for (( i = 1; i <= num_options; i++ )); do
+        selected[$i]=0
+    done
+
+    local current=1
+    local rendered=false
+
+    # Hide the cursor during selection
+    tput civis 2>/dev/null || true
+
+    cleanup() {
+        tput cnorm 2>/dev/null || true
+    }
+
+    trap 'cleanup; exit 130' INT TERM
+
+    draw_menu() {
+        # Move cursor up to overwrite previous menu render
+        if [ "$rendered" = true ]; then
+            printf "\033[%dA\033[J" "$num_options"
+        fi
+        local j
+        for (( j = 1; j <= num_options; j++ )); do
+            local mark=" "
+            [[ ${selected[$j]} -eq 1 ]] && mark="✔"
+            if (( j == current )); then
+                printf "\033[35m❯ [%s] %s\033[0m\n" "$mark" "${options[$j]}"
+            else
+                printf "  [%s] %s\n" "$mark" "${options[$j]}"
+            fi
+        done
+        rendered=true
+    }
+
+    draw_menu
+
+    while true; do
+        local key=''
+        IFS= read -rsk 1 key 2>/dev/null || break
+
+        if [[ "$key" == $'\e' ]]; then
+            # Read the '[' part of an escape sequence
+            local bracket=''
+            IFS= read -rsk 1 -t 0.1 bracket 2>/dev/null || true
+            if [[ "$bracket" == '[' ]]; then
+                # Read the final letter (A=up, B=down, etc.)
+                local arrow=''
+                IFS= read -rsk 1 -t 0.1 arrow 2>/dev/null || true
+                case "$arrow" in
+                    A) (( current > 1 )) && (( current-- )) || true ;;
+                    B) (( current < num_options )) && (( current++ )) || true ;;
+                    *) draw_menu; continue ;;
+                esac
+                draw_menu
+                continue
+            fi
+            # Bare escape — exit
+            break
+        fi
+
+        case "$key" in
+            k) (( current > 1 )) && (( current-- )) || true ;;
+            j) (( current < num_options )) && (( current++ )) || true ;;
+            ' ') selected[$current]=$(( 1 - selected[$current] )) ;;
+            $'\n'|$'\r') break ;;
+            *) continue ;;
+        esac
+        draw_menu
+    done
+
+    cleanup
+    trap - INT TERM
+
+    # Store selected indices in the global result array
+    for (( i = 1; i <= num_options; i++ )); do
+        [[ ${selected[$i]} -eq 1 ]] && _MULTI_SELECT_RESULT+=($i)
+    done
 }
 
 # --- Main Script ---
@@ -191,7 +328,7 @@ msg "Homebrew found, proceeding with installation..."
 # 2. Prompt for package installation
 msg "Preparing to install packages and casks"
 PACKAGES=(
-    lsd lazygit bob fzf mise starship stow zoxide bat bat-extras
+    lsd lazygit fzf mise starship stow zoxide bat bat-extras
     git-delta ripgrep tlrc vivid fastfetch fd git-filter-repo htop jq
 )
 CASKS=(
@@ -210,12 +347,12 @@ else
     max_rows=${#CASKS[@]}
 fi
 
-# Print packages and casks in two columns
+# Print packages and casks in two columns (1-based indexing for zsh arrays)
 printf "\033[36m%-40s %s\033[0m\n" "PACKAGES" "CASKS"
 printf "%-40s %s\n" "------------------------------" "------------------------------"
-for ((i=0; i<max_rows; i++)); do
-    package_item="${PACKAGES[i]:-}"
-    cask_item="${CASKS[i]:-}"
+for (( i = 1; i <= max_rows; i++ )); do
+    package_item="${PACKAGES[$i]:-}"
+    cask_item="${CASKS[$i]:-}"
     [ -n "$package_item" ] && package_item="     - $package_item"
     [ -n "$cask_item" ] && cask_item="     - $cask_item"
     printf "%-40s %s\n" "$package_item" "$cask_item"
@@ -224,6 +361,7 @@ done
 echo ""
 echo -n "Do you want to install these? (y/n): "
 read -r response
+response=${response[-1]}
 echo ""
 
 if [[ ! "$response" =~ ^[Yy]$ ]]; then
@@ -244,7 +382,8 @@ echo ""
 # 5. Stow Dotfiles
 msg "Stowing dotfiles"
 run_with_spinner "Stowing dotfiles" \
-    stow ghostty git lazygit lsd mvim starship zsh
+    stow --no-folding --ignore=.DS_Store --ignore='\.env' --ignore='instructions\.md' \
+    gemini vibe ghostty git lazygit lsd mvim starship zsh
 
 echo ""
 
@@ -257,6 +396,7 @@ RUNTIMES=(
     go
     rust
     pnpm
+    neovim
 )
 
 echo "The following runtimes will be installed globally:"
@@ -265,9 +405,16 @@ for runtime in "${RUNTIMES[@]}"; do
     echo "     - $runtime"
 done
 echo ""
-echo -n "Do you want to install these? (y/n): "
-read -r response
-echo ""
+while true; do
+    echo -n "Do you want to install these? (y/n): "
+    read -r response
+    response=${response[-1]}
+    case "$response" in
+        [Yy]) break ;;
+        [Nn]) break ;;
+        *) printf "\r\033[K" ;;
+    esac
+done
 
 if [[ "$response" =~ ^[Yy]$ ]]; then
     if ! command_exists mise; then
@@ -281,6 +428,56 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
         run_with_spinner "Installing $runtime" \
             mise use -g "${runtime}@latest"
     done
+fi
+
+# 7. AI CLI Tools
+echo ""
+msg "AI CLI Tools"
+while true; do
+    echo -n "Do you want to install any CLI AI tools? (y/n): "
+    read -r response
+    response=${response[-1]}
+    case "$response" in
+        [Yy]) break ;;
+        [Nn]) break ;;
+        *) printf "\r\033[K" ;;
+    esac
+done
+
+if [[ "$response" =~ ^[Yy]$ ]]; then
+    echo ""
+    AI_TOOLS_DISPLAY=("OpenCode" "KiloCode" "Gemini CLI")
+    AI_TOOLS_PKGS=("opencode-ai" "@kilocode/cli" "@google/gemini-cli")
+
+    echo "Select tools to install (Space to toggle, Enter to proceed):"
+
+    # Call multi_select directly (NOT in a subshell) — results land in _MULTI_SELECT_RESULT
+    multi_select "${AI_TOOLS_DISPLAY[@]}"
+    selected_indices=("${_MULTI_SELECT_RESULT[@]}")
+
+    if [[ ${#selected_indices[@]} -gt 0 ]]; then
+        # Check for pnpm
+        if ! command_exists pnpm; then
+            # If not in path, try to find it via mise which was just installed
+            if command_exists mise; then
+                # Refresh PATH for the current shell to find mise-installed tools
+                eval "$(mise activate zsh)"
+            fi
+        fi
+
+        if ! command_exists pnpm; then
+            printf "\033[31m    ✖ pnpm not found. Skipping AI tools installation.\033[0m\n"
+        else
+            for idx in "${selected_indices[@]}"; do
+                tool_name="${AI_TOOLS_DISPLAY[$idx]}"
+                pkg_name="${AI_TOOLS_PKGS[$idx]}"
+                run_with_spinner "Installing $tool_name" \
+                    pnpm add -g "$pkg_name"
+            done
+        fi
+    else
+        echo "No tools selected."
+    fi
 fi
 
 echo ""
