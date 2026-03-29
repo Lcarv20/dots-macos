@@ -9,8 +9,8 @@
       "alt-k": "editor::MoveLineUp",
       "space u t": "editor::ToggleTabBar",
       "space a t": "editor::ToggleEditPrediction",
-      "ctrl-shift-enter": "editor::OpenExcerpts"
-    }
+      "ctrl-shift-enter": "editor::OpenExcerpts",
+    },
   },
   {
     "context": "TabSwitcher",
@@ -19,21 +19,21 @@
       "j": "menu::SelectNext",
       "d d": "tab_switcher::CloseSelectedItem",
       "G": "menu::SelectLast",
-      "g g": "menu::SelectFirst"
-    }
+      "g g": "menu::SelectFirst",
+    },
   },
   {
     "context": "Pane",
     "bindings": {
       "ctrl-shift-pageup": "pane::SwapItemLeft",
-      "ctrl-shift-pagedown": "pane::SwapItemRight"
-    }
+      "ctrl-shift-pagedown": "pane::SwapItemRight",
+    },
   },
   {
     "context": "vim_mode == visual",
     "bindings": {
-      "shift-s": ["vim::PushAddSurrounds", {}]
-    }
+      "shift-s": ["vim::PushAddSurrounds", {}],
+    },
   },
   {
     "context": "Editor && vim_mode == normal && vim_operator == none && !VimWaiting",
@@ -50,36 +50,36 @@
       "space l o": "outline::Toggle",
       "g r": "editor::FindAllReferences",
       "m a": "pane::TogglePinTab",
-      "space g d": "git::Diff"
-    }
+      "space g d": "git::Diff",
+    },
   },
   {
     "context": "Terminal",
     "bindings": {
       "cmd-n": "workspace::NewTerminal",
-      "cmd-d": "pane::CloseActiveItem"
-    }
+      "cmd-d": "pane::CloseActiveItem",
+    },
   },
   {
     "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
     "bindings": {
       // put key-bindings here if you want them to work only in normal mode
-      "space s g": "pane::DeploySearch"
-    }
+      "space s g": "pane::DeploySearch",
+    },
   },
   {
     "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
     "bindings": {
       // visual, visual line & visual block modes
-    }
+    },
   },
   {
     "context": "Editor && vim_mode == insert && !menu",
     "bindings": {
       // put key-bindings here if you want them to work in insert mode
       // e.g.
-      "j k": "vim::NormalBefore" // remap jj in insert mode to escape.
-    }
+      "j k": "vim::NormalBefore", // remap jj in insert mode to escape.
+    },
   },
   {
     "context": "Dock",
@@ -87,9 +87,9 @@
       "ctrl-w h": "workspace::ActivatePaneLeft",
       "ctrl-w l": "workspace::ActivatePaneRight",
       "ctrl-w k": "workspace::ActivatePaneUp",
-      "ctrl-w j": "workspace::ActivatePaneDown"
+      "ctrl-w j": "workspace::ActivatePaneDown",
       // ... or other keybindings
-    }
+    },
   },
   // Explorer
   {
@@ -112,7 +112,7 @@
       "a": "project_panel::NewFile",
       "shift-a": "project_panel::NewDirectory",
       "y y": "workspace::CopyRelativePath",
-      "shift-y": "workspace::CopyPath"
-    }
-  }
+      "shift-y": "workspace::CopyPath",
+    },
+  },
 ]

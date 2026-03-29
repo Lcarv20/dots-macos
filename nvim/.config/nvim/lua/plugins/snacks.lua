@@ -30,10 +30,6 @@ return {
 		explorer = {
 			enabled = true,
 		},
-		---@class snacks.indent.Config
-		---@field enabled? boolean
-		---@class snacks.indent.Config
-		---@field enabled? boolean
 		indent = {
 			indent = {
 				priority = 1,
@@ -54,15 +50,6 @@ return {
 				--     "SnacksIndent8",
 				-- },
 			},
-			-- animate scopes. Enabled by default for Neovim >= 0.10
-			-- Works on older versions but has to trigger redraws during animation.
-			---@class snacks.indent.animate: snacks.animate.Config
-			---@field enabled? boolean
-			--- * out: animate outwards from the cursor
-			--- * up: animate upwards from the cursor
-			--- * down: animate downwards from the cursor
-			--- * up_down: animate up or down based on the cursor position
-			---@field style? "out"|"up_down"|"down"|"up"
 			animate = {
 				enabled = vim.fn.has("nvim-0.10") == 1,
 				style = "out",
@@ -114,7 +101,7 @@ return {
 			enabled = true,
 			layouts = {
 				vscode = {
-					preview = false,
+					preview = "main",
 					layout = {
 						backdrop = false,
 						row = 1,
@@ -166,10 +153,10 @@ return {
 			},
 		},
 	},
-	init = function()
-		vim.keymap.set("n", "<leader>s", "", { desc = "Search" })
-		vim.keymap.set("n", "<leader>b", "", { desc = "Buffers" })
-	end,
+	-- init = function()
+	-- 	vim.keymap.set("n", "<leader>s", "", { desc = "Search" })
+	-- 	vim.keymap.set("n", "<leader>b", "", { desc = "Buffers" })
+	-- end,
 
 	keys = {
 		-- Top Pickers & Explorer

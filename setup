@@ -382,8 +382,8 @@ echo ""
 # 5. Stow Dotfiles
 msg "Stowing dotfiles"
 run_with_spinner "Stowing dotfiles" \
-    stow --no-folding --ignore=.DS_Store --ignore='\.env' --ignore='instructions\.md' \
-    gemini vibe ghostty git lazygit lsd mvim starship zsh
+    stow --ignore=.DS_Store --ignore='\.env' --ignore='instructions\.md' \
+    ghostty git lazygit lsd nvim starship zsh
 
 echo ""
 
