@@ -446,8 +446,8 @@ done
 
 if [[ "$response" =~ ^[Yy]$ ]]; then
     echo ""
-    AI_TOOLS_DISPLAY=("OpenCode" "KiloCode" "Gemini CLI")
-    AI_TOOLS_PKGS=("opencode-ai" "@kilocode/cli" "@google/gemini-cli")
+    AI_TOOLS_DISPLAY=("Gemini CLI")
+    AI_TOOLS_PKGS=("@google/gemini-cli")
 
     echo "Select tools to install (Space to toggle, Enter to proceed):"
 
